@@ -1,0 +1,29 @@
+FROM python:3.9-buster
+USER root
+
+ENV LANG ja_JP.UTF-8
+ENV LANGUAGE ja_JP:ja
+ENV LC_ALL ja_JP.UTF-8
+ENV TZ JST-9
+ENV TERM xterm
+
+RUN apt-get update && apt-get install -y
+RUN apt-get install vim less -y
+RUN apt-get install build-essential libbz2-dev libdb-dev \
+libreadline-dev libffi-dev libgdbm-dev liblzma-dev \
+libncursesw5-dev libsqlite3-dev libssl-dev \
+zlib1g-dev uuid-dev tk-dev -y
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN mkdir -p /api/
+WORKDIR /api/
+ADD ./requirements.txt /api/requirements.txt
+
+RUN apt-get install python3-pip -y
+RUN pip install --upgrade pip
+RUN pip install --upgrade setuptools
+RUN pip install -r requirements.txt
+ADD . /api/
+EXPOSE 8000

@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: django_api_db
+    build:
+      context: .
+      dockerfile: DockerfilePsql
+    volumes:
+      - pgdata:/var/lib/postgres/data
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=${POSTGRE_DB}
+      - POSTGRES_USER=${POSTGRE_USER}
+      - POSTGRES_PASSWORD=${POSTGRE_PW}
+
+  web:
+    container_name: django_web_api
+    build:
+      context: .
+      dockerfile: DockerfilePython
+    volumes:
+      - ./api:/api
+    tty: true
+    command: python manage.py runserver 0:8000
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+volumes:
+  pgdata: {}
