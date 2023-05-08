@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser,PermissionsMixin
 from django.utils import timezone
@@ -95,9 +96,10 @@ class UserProfile(models.Model):
     )
     update_at = models.DateTimeField(
         verbose_name="update date",
+        null=True,
         default=timezone.now
     )
-    account = models.CharField(
+    account_id = models.CharField(
         verbose_name="account id",
         max_length=50,
         unique=True,
@@ -113,7 +115,8 @@ class UserProfile(models.Model):
         verbose_name="user icon",
         upload_to=return_icon_path,
         blank=True,
-        null=True
+        null=True,
+        default="icon/defo.png"
     )
     link = models.URLField(
         verbose_name="url",
@@ -128,7 +131,19 @@ class UserProfile(models.Model):
         else:
             return str(self.pk)
         
+    def icon_url(self):
+        if self.icon and hasattr(self.icon, 'url'):
+            return self.icon.url
+        
 class UserChannel(models.Model):
+    
+    channel_id = models.CharField(
+        verbose_name="channel id",
+        max_length=50,
+        unique=True,
+        blank=True,
+        null=True
+    )
     
     user_channel = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -147,14 +162,25 @@ class UserChannel(models.Model):
         verbose_name="channel icon",
         upload_to=return_icon_path,
         blank=True,
-        null=True
+        null=True,
+        default="channel_icon/defo.png"
     )
     
     channel_cover = models.ImageField(
         verbose_name="channel cover",
         upload_to=return_cover_path,
         blank=True,
-        null=True
+        null=True,
+        default="channel_cover/defo.png"
+    )
+    created_on=models.DateTimeField(
+        verbose_name="created on",
+        default=timezone.now
+    )
+    update_at = models.DateTimeField(
+        verbose_name="update date",
+        null=True,
+        default=timezone.now
     )
     
     def __str__(self):

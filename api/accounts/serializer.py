@@ -12,7 +12,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'id',
             'nickname',
             'user_profile',
-            'account',
+            'account_id',
             'bio',
             'icon',
             'link',
@@ -23,8 +23,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model=User()
-        fields=('id','email','is_staff','joined_date')
+        model=User
+        fields=('id','email','is_staff','joined_date','is_superuser')
         read_only_fields = ['id',]
         extra_kwargs = {
             'password': {'write_only': True},
@@ -38,8 +38,8 @@ class ChannelSerializer(serializers.ModelSerializer):
 class UserChangeSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model=User()
-        fields=('id','email','password','is_staff','joined_date')
+        model=User
+        fields=('id','email','password','is_staff','joined_date','is_superuser')
         read_only_fields = ['id',]
         extra_kwargs = {
             'password': {'write_only': True},
@@ -64,15 +64,13 @@ class ProfileModelSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(format="%Y-%m-%d",read_only=True)
     update_at = serializers.DateTimeField(format="%Y-%m-%d",read_only=True)
     user_profile=UserSerializer(read_only=True)
-    user_profile_id=serializers.PrimaryKeyRelatedField(read_only=True,many=True)
     class Meta:
         model=UserProfile
-        fields=('id','nickname','user_profile','user_profile_id','account','bio','icon','link','created_on','update_at')
+        fields=('id','nickname','user_profile','user_profile_id','account_id','bio','icon','link','created_on','update_at')
 
 
 class ChannelModelSerializer(serializers.ModelSerializer):
     user_channel=UserSerializer(read_only=True)
-    user_channel_id=serializers.PrimaryKeyRelatedField(read_only=True,many=True)
     class Meta:
         model=UserChannel
         fields=('id','channel_name','user_channel','user_channel_id','account','channel_icon','channel_cover')
@@ -81,7 +79,7 @@ class AccountRelationSerializer(serializers.ModelSerializer):
     profile=serializers.PrimaryKeyRelatedField(read_only=True,many=True)
     channel=serializers.PrimaryKeyRelatedField(read_only=True,many=True)
     class Meta:
-        model=User()
+        model=User
         fields=('id','email','is_staff','joined_date','profile','channel')
         read_only_fields = ['id',]
         extra_kwargs = {
@@ -92,7 +90,7 @@ class AccountAdminInspectSerializer(serializers.ModelSerializer):
     profile=serializers.PrimaryKeyRelatedField(read_only=True,many=True)
     channel=serializers.PrimaryKeyRelatedField(read_only=True,many=True)
     class Meta:
-        model=User()
+        model=User
         fields=('id','email','password','is_staff','joined_date','profile','channel')
         read_only_fields = ['id',]
         
