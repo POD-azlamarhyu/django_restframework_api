@@ -6,10 +6,11 @@ from django.utils.translation import gettext as _
 
 
 class UserAdmin(BaseUserAdmin):
-    ordering = ['id']
+    ordering = ['-id']
+    readonly_fields=('id',)
     list_display = ['email']
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('id','email', 'password')}),
         (_('Personal Info'), {'fields': ()}),
         (
             _('Permissions'),
@@ -29,7 +30,15 @@ class UserAdmin(BaseUserAdmin):
             'fields':('email','password1','password2')
         }),
     )
+
+class ProfileAdmin(BaseUserAdmin):
+    ordering=['-id']
+    readonly_fields=('id',)
+    list_display=['nickname']
     
+
+class ChannelAdmin(BaseUserAdmin):
+    pass
 admin.site.register(User,UserAdmin)
 admin.site.register(UserProfile)
 admin.site.register(UserChannel)

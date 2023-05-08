@@ -104,4 +104,7 @@ restframeworkのViewはいくつかのクラスを継承する
 - `curl -X POST -H "Content-Type: application/json" -d '{"email":"","password":""}' http://0.0.0.0:8000/auth/signup/`
 - `curl -X POST -H "Content-Type: application/json" -d '{"email":"","password":""}' http://0.0.0.0:8000/auth/account/jwt/create/`
 - `curl -X POST -H "Content-Type: application/json" -d '{"refresh":"xxxxxx"}' http://0.0.0.0:8000/auth/account/jwt/refresh/`
+- `curl -X POST -H "Content-Type: application/json" -d '{"token":"xxxxxx"}' http://0.0.0.0:8000/auth/account/jwt/verify/`
 - `curl -X POST -H "Content-Type: application/json" -H 'Authorization: JWT xxxxxxxxxxxxxxxxx' -d '{"nickname":"","account_id":"","bio":""}' http://0.0.0.0:8000/auth/user/profile/`
+- `curl -X GET -H "Content-Type: application/json" -H 'Authorization: JWT xxxxxxxxxxxxxxxxx' http://0.0.0.0:8000/auth/admin/secret/accounts/`
+- `curl -X GET -H "Content-Type: application/json" -H 'Authorization: JWT xxxxxxxxxxxxxxxxx' http://0.0.0.0:8000/auth/account/myuser`

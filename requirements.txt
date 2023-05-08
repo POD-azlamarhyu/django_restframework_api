@@ -28,3 +28,4 @@ factory_boy
 Werkzeug
 python-dateutil
 django-security
+django-seed

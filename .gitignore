@@ -5,4 +5,5 @@ api/*/__pycache__/
 api/*/migrations/
 api/*/migrations/__pycache__/
 api/*/migrations/*.py
+api/media/
 secret.md
