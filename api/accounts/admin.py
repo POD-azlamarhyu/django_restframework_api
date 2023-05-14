@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
 from django.conf import settings
 from .models import User,UserChannel,UserManager,UserProfile
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -10,10 +11,8 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields=('id',)
     list_display = ['email']
     fieldsets = (
-        (None, {'fields': ('id','email', 'password')}),
-        (_('Personal Info'), {'fields': ()}),
-        (
-            _('Permissions'),
+        (_('Personal Info'), {'fields': ('id','email', 'password')}),
+        (_('Permissions'),
             {
                 'fields': (
                     'is_active',
@@ -22,7 +21,7 @@ class UserAdmin(BaseUserAdmin):
                 )
             }
         ),
-        (_('Important dates'), {'fields': ('last_login',)}),
+        (_('Important dates'), {'fields': ('last_login','joined_date')}),
     )
     add_fieldsets = (
         (None, {
@@ -31,15 +30,21 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
 
-class ProfileAdmin(BaseUserAdmin):
+class ProfileAdmin(ModelAdmin):
     ordering=['-id']
-    readonly_fields=('id',)
+    readonly_fields=('id','created_on')
     list_display=['nickname']
     
+    fieldsets = (
+        (_('Personal Info'),{'fields':('id','nickname','user_profile')}),
+        (_('Personal content'),{'fields':('account_id','bio','icon','link')}),
+        (_('Important dates'), {'fields': ('created_on','update_at')})
+    )
 
-class ChannelAdmin(BaseUserAdmin):
-    pass
+class ChannelAdmin(ModelAdmin):
+    ordering=['-id']
+    readonly_fields=('id',)
 admin.site.register(User,UserAdmin)
-admin.site.register(UserProfile)
-admin.site.register(UserChannel)
+admin.site.register(UserProfile,ProfileAdmin)
+admin.site.register(UserChannel,ChannelAdmin)
 

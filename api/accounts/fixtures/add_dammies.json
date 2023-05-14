@@ -1,0 +1,134 @@
+[
+    {
+        "model":"accounts.userchannel",
+        "pk":2,
+        "fields":{
+            "channel_id":"noisy_obasan",
+            "user_channel":"795c54b0-6af1-4dfc-ae9a-c34dbfd59406",
+            "channel_name":"騒音Ch.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":3,
+        "fields":{
+            "channel_id":"society_dont_allow",
+            "user_channel":"d49797a1-4a57-4bd4-a908-227431706308",
+            "channel_name":"社会は許してくれないCh.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":4,
+        "fields":{
+            "channel_id":"heizo_sakusyu",
+            "user_channel":"b0293f39-e6f7-4eed-a3b7-ee8b4ca1c47f",
+            "channel_name":"HeyZo 搾取Ch.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":5,
+        "fields":{
+            "channel_id":"kengikai_giin",
+            "user_channel":"e3203429-f71a-4655-9233-e1f33cb16c97",
+            "channel_name":"兵庫県議会Ch.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":6,
+        "fields":{
+            "channel_id":"instant_killing_boy",
+            "user_channel":"bfa5ca26-1154-49f9-8524-9b39a7a872f8",
+            "channel_name":"瞬殺Ch.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":7,
+        "fields":{
+            "channel_id":"rikken_nigata_drop",
+            "user_channel":"0ff76bbf-3384-47e4-b927-9389cadd7022",
+            "channel_name":"新潟県議会落選Ch.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":8,
+        "fields":{
+            "channel_id":"self_protection",
+            "user_channel":"5d4f92cc-be43-4e4c-ae08-adfb0cc71e25",
+            "channel_name":"日本自己防衛Ch.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":9,
+        "fields":{
+            "channel_id":"dont_buy_thing",
+            "user_channel":"8e53a792-9326-479a-aa0b-ef73da72cedb",
+            "channel_name":"ヨドバシカメラ有楽町Ch.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":10,
+        "fields":{
+            "channel_id":"boys_be_lovers",
+            "user_channel":"868804af-7d57-48e5-a250-eadedb829595",
+            "channel_name":"日本幸せショックちゃんねる",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":11,
+        "fields":{
+            "channel_id":"u_tokyo_is_not_cool",
+            "user_channel":"ab9b4724-9339-4115-8b29-fdf2077dc6b8",
+            "channel_name":"東大医学部去勢Ch.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    },
+    {
+        "model":"accounts.userchannel",
+        "pk":12,
+        "fields":{
+            "channel_id":"hydrogen_lovers",
+            "user_channel":"acb53523-742f-4265-b704-712512005271",
+            "channel_name":"水素の音Ch.",
+            "created_on":"2023-05-14 04:55:18.607167+00",
+            "channel_icon":"",
+            "channel_cover":""
+        }
+    }
+]

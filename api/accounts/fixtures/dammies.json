@@ -1,0 +1,244 @@
+[
+    {
+        "model":"accounts.user",
+        "pk":"795c54b0-6af1-4dfc-ae9a-c34dbfd59406",
+        "fields":{
+            "email":"noisy.obasan@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$ZY1obUSaiz624fYMnvtCli$kZYVpSnT1TTLrLn3oXUGZlxA+z6xxuR1kSq8Jbn5drA="
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":2,
+        "fields":{
+            "nickname":"souon obasan",
+            "user_profile":"795c54b0-6af1-4dfc-ae9a-c34dbfd59406",
+            "account_id":"hikoshi!!",
+            "bio":"うるせぇよ，ゴミが",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":"https://unching.com.xyz"
+        }
+    },
+    {
+        "model":"accounts.user",
+        "pk":"d49797a1-4a57-4bd4-a908-227431706308",
+        "fields":{
+            "email":"society.dont.allow@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$AdZcxg3YNwcIAlPpAlCQWc$kKuMbMQUmGWHWGvCzgj+ncNuVlCmeNLNePkEuJfN8tY="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":3,
+        "fields":{
+            "nickname":"akihabara 社会は許してくれいないニキ",
+            "user_profile":"d49797a1-4a57-4bd4-a908-227431706308",
+            "account_id":"society",
+            "bio":"それは，世間は許してくれないよねぇ．ああああああああああああいいいいいいいいいいいいいいいい",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":"https://society.com.xyz"
+        }
+    },
+    {
+        "model":"accounts.user",
+        "pk":"b0293f39-e6f7-4eed-a3b7-ee8b4ca1c47f",
+        "fields":{
+            "email":"heizo.takenaka@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$S5bsOlMFTVxFIP7S3GfLwV$B7ONApQmLh+cUDsiKXb08mg9HcWYlmm1mZFJyI7ZacU="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":4,
+        "fields":{
+            "nickname":"Takenaka Heizo@sakusyu",
+            "user_profile":"b0293f39-e6f7-4eed-a3b7-ee8b4ca1c47f",
+            "account_id":"394Oishi",
+            "bio":"元パソナントカグループ会長です．中貫きビジネスめっちゃ美味しい．",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":"https://pasonanic.com.xyz"
+        }
+    },
+    {
+        "model":"accounts.user",
+        "pk":"e3203429-f71a-4655-9233-e1f33cb16c97",
+        "fields":{
+            "email":"ryutaro.nonomura@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$W4qqFfA8klutE1tkgfAffO$AcHWVj6WEkPyhZUMzFXF0MP7YEmsbtnBB6YeBO2r3kU="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":5,
+        "fields":{
+            "nickname":"nonomura ryutaro",
+            "user_profile":"e3203429-f71a-4655-9233-e1f33cb16c97",
+            "account_id":"aaaaaaaaa",
+            "bio":"元兵庫県議会所属．俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじや",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":"https://hyogo.coc.jp"
+        }
+    },
+    {
+        "model":"accounts.user",
+        "pk":"bfa5ca26-1154-49f9-8524-9b39a7a872f8",
+        "fields":{
+            "email":"syunsatsu.colvalt@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$YDZKS3GrevrW4J1L8CxfVO$3wZgOsRVJevyAY8Giiy1pQY6a/36m0nNb4bKbkZOm/Q="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":6,
+        "fields":{
+            "nickname":"瞬殺のコルバルト",
+            "user_profile":"bfa5ca26-1154-49f9-8524-9b39a7a872f8",
+            "account_id":"instant_killer",
+            "bio":"瞬殺されました．まじで瞬殺です",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":"https://instantkill"
+        }
+    },
+    {
+        "model":"accounts.user",
+        "pk":"0ff76bbf-3384-47e4-b927-9389cadd7022",
+        "fields":{
+            "email":"rikken.hakkyo.datsuraku@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$tgxg1epwgj387zc8jTxryz$ZN9sPWoc24EAagfzD2tC+n4Otnv1FB2kS8b7UwDwbJI="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":7,
+        "fields":{
+            "nickname":"新潟県議会落選ニキ",
+            "user_profile":"0ff76bbf-3384-47e4-b927-9389cadd7022",
+            "account_id":"rikken_niigata_deny",
+            "bio":"4年立ってまたこれか・・・・・・・",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":""
+        }
+    },
+    {
+        "model":"accounts.user",
+        "pk":"5d4f92cc-be43-4e4c-ae08-adfb0cc71e25",
+        "fields":{
+            "email":"jikobouei.ojisan@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$zfYLTdgCmnvB97auCMd5u2$L/16PuUEOZNVM1o2boS8eiHzQIqSWDBlqLkJ8AAonbQ="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":8,
+        "fields":{
+            "nickname":"自己防衛おじさん",
+            "user_profile":"5d4f92cc-be43-4e4c-ae08-adfb0cc71e25",
+            "account_id":"jikobouei_capital",
+            "bio":"自己防衛おじさんです．会社経営してます",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":""
+        }
+    },
+    {
+        "model":"accounts.user",
+        "pk":"8e53a792-9326-479a-aa0b-ef73da72cedb",
+        "fields":{
+            "email":"monourutte.level.janezo@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$D81AlsHjGMHPkNcl7nFaE6$Jer+3ymsAMrglv10Lv+iPJfJbDwyEeLNaR15YGQMaZ4="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":9,
+        "fields":{
+            "nickname":"物売るってレベルじゃねえぞおいニキ",
+            "user_profile":"8e53a792-9326-479a-aa0b-ef73da72cedb",
+            "account_id":"yurakucho_yodobashi",
+            "bio":"ものを売るレベルじゃないほど混んでいました．日本大学で教授やってます",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":""
+        }
+    },
+    {
+        "model":"accounts.user",
+        "pk":"868804af-7d57-48e5-a250-eadedb829595",
+        "fields":{
+            "email":"shiawasenara.ok@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$zfYLTdgCmnvB97auCMd5u2$L/16PuUEOZNVM1o2boS8eiHzQIqSWDBlqLkJ8AAonbQ="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":10,
+        "fields":{
+            "nickname":"幸せならOKデスニキ",
+            "user_profile":"868804af-7d57-48e5-a250-eadedb829595",
+            "account_id":"shock_emperier",
+            "bio":"まじでショックです．でも，幸せなら，おKです",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":""
+        }
+    },
+
+    {
+        "model":"accounts.user",
+        "pk":"ab9b4724-9339-4115-8b29-fdf2077dc6b8",
+        "fields":{
+            "email":"collect.evidence@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$zeJq55MSTdUfeljwK0fUHR$OZmOgeTsA/CHYLWlg1hSBoIwIwW7POupwBEVYi7yV9E="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":11,
+        "fields":{
+            "nickname":"東大医学部頭悪くないかオジサン",
+            "user_profile":"ab9b4724-9339-4115-8b29-fdf2077dc6b8",
+            "account_id":"collect_evidence",
+            "bio":"東大医学部は頭悪い！本当だからだ！ 正しい根拠をゆえ！！",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":""
+        }
+    },
+    {
+        "model":"accounts.user",
+        "pk":"acb53523-742f-4265-b704-712512005271",
+        "fields":{
+            "email":"sound.of.hydrogen@itmeme.co.jp",
+            "password":"pbkdf2_sha256$320000$rJ7BWz7zCCbTy0WrsdCdf0$33Mr3DfMQid16j1QKqU5D9V9KRqARcvWjoGNsDJ4yow="
+            
+        }
+    },
+    {
+        "model":"accounts.userprofile",
+        "pk":12,
+        "fields":{
+            "nickname":"えぇ！？水素の音ネキ",
+            "user_profile":"acb53523-742f-4265-b704-712512005271",
+            "account_id":"hydrogen_nek",
+            "bio":"水素水飲んでます．えぇ！？なにこれパンパン 開けてみたいでしょぉ？ 水素の音ぉ！！",
+            "created_on":"2023-05-14 04:29:18.607167+00",
+            "icon":"",
+            "link":""
+        }
+    }
+]

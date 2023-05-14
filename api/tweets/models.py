@@ -36,11 +36,12 @@ class Tweet(models.Model):
     )
     update_on = models.DateTimeField(
         verbose_name="tweet edit",
-        auto_now=True,
+        default=timezone.now,
+        null=True
     )
-    like = models.ManyToManyField(
+    tweet_like = models.ManyToManyField(
         User,
-        related_name="like",
+        related_name="tweet_like",
         blank=True    
     )
     
@@ -70,11 +71,27 @@ class Comment(models.Model):
     created_on=models.DateTimeField(
         auto_now_add=True
     )
+    comment_like = models.ManyToManyField(
+        User,
+        related_name="comment_like",
+        blank=True    
+    )
+    update_on = models.DateTimeField(
+        verbose_name="comment edit",
+        default=timezone.now,
+        null=True
+    )
     
     def __str__(self):
         return str(self.id)+" : "+self.text
 
 class Retweet(models.Model):
+    
+    retweet_user = models.ForeignKey(
+        User,
+        related_name="user_retweet",
+        on_delete=models.CASCADE,
+    )
     text = models.TextField(
         verbose_name="retweet",
         max_length=500
@@ -84,6 +101,13 @@ class Retweet(models.Model):
         related_name="user_tweet_retweet",
         on_delete=models.CASCADE
     )
+    retweet_like= models.ManyToManyField(
+        User,
+        related_name="retweet_like",
+        blank=True    
+    )
     created_on = models.DateTimeField(
         auto_now_add=True
     )
+    def __str__(self):
+        return str(self.id)+" : "+self.text
