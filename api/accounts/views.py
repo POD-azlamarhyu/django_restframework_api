@@ -8,7 +8,6 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.views.decorators.cache import cache_page
 from .serializer import ProfileSerializer,UserSerializer,ChannelSerializer,UserChangeSerializer,ProfileModelSerializer,ChannelModelSerializer,AccountRelationSerializer,AccountAdminInspectSerializer
-from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.http import JsonResponse,Http404
 from rest_framework.permissions import AllowAny,IsAuthenticated,IsAdminUser,BasePermission
@@ -150,13 +149,13 @@ class UserModelView(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 class UserProfileView(APIView):
-    permission_classes = [AllowAny,]
+    # permission_classes = [AllowAny,]
     
     def get(self,request,format=None):
         res={}
         try:
             
-            accounts = UserProfile.objects.select_related('user_profile').get(user_profile_id="6ee49e44-e22f-49a7-bccb-5b2533a04bb9")
+            accounts = UserProfile.objects.select_related('user_profile').get(user_profile_id=self.request.user.id)
             
             # res["id"]=accounts.id
             # res["nickname"]=accounts.nickname
@@ -196,13 +195,13 @@ class UserProfileView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 class UserChannelView(APIView):
-    permission_classes = [AllowAny,]
+    # permission_classes = [AllowAny,]
     
     def get(self,request,format=None):
         
         try:
             # query = UserChannel.objects.select_related("user_channel").get(user_channel_id=request.user.id)
-            query = UserChannel.objects.select_related("user_channel").get(user_channel_id="6ee49e44-e22f-49a7-bccb-5b2533a04bb9")
+            query = UserChannel.objects.select_related("user_channel").get(user_channel_id=self.request.user.id)
             serializer = ChannelModelSerializer(query)
             return Response(
                 data={
@@ -309,33 +308,54 @@ class AccountAdminInspectView(APIView):
     permission_classes = [DistributeIsAdminPermission,]
     
     def get(self,request,format=None):
-        # Inner join
-        sql_query = '''
-            select 
-                *
-            from
-                accounts_user as ui
-            left join
-                accounts_userprofile as upi
-            on
-                ui.id = upi.user_profile_id
-            left join
-                accounts_userchannel as uci
-            on 
-                ui.id=uci.user_channel_id
-        '''
-        cursor = connection.cursor()
-        cursor.execute(sql_query)
-        accounts = cursor.fetchall()
-
-        return Response(
-            data={
-                "result":"success",
-                "content":list(accounts)
-            },
-            status=status.HTTP_200_OK
-        )
+        
+        try:
+            sql_query = '''
+                select 
+                    *
+                from
+                    accounts_user as ui
+                left join
+                    accounts_userprofile as upi
+                on
+                    ui.id = upi.user_profile_id
+                left join
+                    accounts_userchannel as uci
+                on 
+                    ui.id=uci.user_channel_id
+            '''
+            cursor = connection.cursor()
+            cursor.execute(sql_query)
+            columns = [col[0] for col in cursor.description]
+            account_dict = [
+                dict(zip(columns,row))
+                for row in cursor.fetchall()
+            ]
     
+            return Response(
+                data={
+                    "result":"success",
+                    "content":account_dict
+                },
+                status=status.HTTP_200_OK
+            )
+        except ObjectDoesNotExist:
+            return Response(
+                data={
+                    "result":"success",
+                    "content":"None"
+                },
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            print(e)
+            return Response(
+                data={
+                    "result":"error",
+                    "content":"問題が発生"
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class MyUserProfileView(ListAPIView):
     queryset = UserProfile.objects.all()

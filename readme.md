@@ -108,3 +108,10 @@ restframeworkのViewはいくつかのクラスを継承する
 - `curl -X POST -H "Content-Type: application/json" -H 'Authorization: JWT xxxxxxxxxxxxxxxxx' -d '{"nickname":"","account_id":"","bio":""}' http://0.0.0.0:8000/auth/user/profile/`
 - `curl -X GET -H "Content-Type: application/json" -H 'Authorization: JWT xxxxxxxxxxxxxxxxx' http://0.0.0.0:8000/auth/admin/secret/accounts/`
 - `curl -X GET -H "Content-Type: application/json" -H 'Authorization: JWT xxxxxxxxxxxxxxxxx' http://0.0.0.0:8000/auth/account/myuser`
+
+# 開発でDB周りで詰まったとき
+
+- `docker compose down` コンテナを削除
+- `docker volume ls` ボリュームを確認
+- `docker volume rm <xxxxx>` 該当ボリュームを削除
+- コンテナを作り直す

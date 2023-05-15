@@ -15,6 +15,14 @@ def return_cover_path(instance,filename):
     ext = filename.split('.')[-1]
     return '/'.join(['cover',str(instance.user_profile.id)+"_"+str(".")+str(ext)])
 
+def return_channel_icon_path(instance,filename):
+    ext = filename.split('.')[-1]
+    return '/'.join(['icon',str(instance.user_channel.id)+"_"+str(".")+str(ext)])
+
+def return_channel_cover_path(instance,filename):
+    ext = filename.split('.')[-1]
+    return '/'.join(['cover',str(instance.user_channel.id)+"_"+str(".")+str(ext)])
+
 class UserManager(BaseUserManager):
     def create_user(self,email,password=None):
         """
@@ -160,7 +168,7 @@ class UserChannel(models.Model):
     
     channel_icon = models.ImageField(
         verbose_name="channel icon",
-        upload_to=return_icon_path,
+        upload_to=return_channel_icon_path,
         blank=True,
         null=True,
         default="channel_icon/defo.png"
@@ -168,7 +176,7 @@ class UserChannel(models.Model):
     
     channel_cover = models.ImageField(
         verbose_name="channel cover",
-        upload_to=return_cover_path,
+        upload_to=return_channel_cover_path,
         blank=True,
         null=True,
         default="channel_cover/defo.png"
