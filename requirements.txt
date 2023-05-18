@@ -29,3 +29,4 @@ Werkzeug
 python-dateutil
 django-security
 django-seed
+passlib

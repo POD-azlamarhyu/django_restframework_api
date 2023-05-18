@@ -19,9 +19,9 @@ class Tweet(models.Model):
     text = models.TextField(
         verbose_name="tweet",max_length=500
     )
-    user_tweet = models.ForeignKey(
+    tweet_user = models.ForeignKey(
         User,
-        related_name='user_tweet',
+        related_name='tweet_user',
         on_delete=models.CASCADE
     )
     tweet_img = models.ImageField(
@@ -52,9 +52,9 @@ class Comment(models.Model):
     text = models.TextField(
         verbose_name="comment",max_length=500
     )
-    user_comment = models.ForeignKey(
+    comment_user = models.ForeignKey(
         User,
-        related_name="user_comment",
+        related_name="comment_user",
         on_delete=models.CASCADE,
     )
     tweet = models.ForeignKey(
@@ -89,14 +89,14 @@ class Retweet(models.Model):
     
     retweet_user = models.ForeignKey(
         User,
-        related_name="user_retweet",
+        related_name="retweet_user",
         on_delete=models.CASCADE,
     )
     text = models.TextField(
         verbose_name="retweet",
         max_length=500
     )
-    user_tweet = models.ForeignKey(
+    tweet = models.ForeignKey(
         Tweet,
         related_name="user_tweet_retweet",
         on_delete=models.CASCADE

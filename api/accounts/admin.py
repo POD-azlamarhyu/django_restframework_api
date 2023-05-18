@@ -7,17 +7,20 @@ from django.utils.translation import gettext as _
 
 
 class UserAdmin(BaseUserAdmin):
-    ordering = ['-id']
+    ordering = ['-joined_date']
     readonly_fields=('id',)
     list_display = ['email']
     fieldsets = (
-        (_('Personal Info'), {'fields': ('id','email', 'password')}),
-        (_('Permissions'),
-            {
+        (_('Personal info'), {'fields': ('id','email', 'password')}),
+        (
+            _('Permissions'),
+            {   
                 'fields': (
                     'is_active',
                     'is_staff',
                     'is_superuser',
+                    'groups',
+                    'user_permissions',
                 )
             }
         ),
@@ -29,6 +32,14 @@ class UserAdmin(BaseUserAdmin):
             'fields':('email','password1','password2')
         }),
     )
+    list_display = ("id", "email", "is_staff","joined_date")
+    list_filter = ("is_staff", "is_superuser", "is_active", "groups","user_permissions")
+    search_fields = ("id","email","joined_date","is_staff","is_superuser")
+    filter_horizontal = (
+        "groups",
+        "user_permissions",
+    )
+    
 
 class ProfileAdmin(ModelAdmin):
     ordering=['-id']

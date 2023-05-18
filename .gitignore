@@ -6,4 +6,6 @@ api/*/migrations/
 api/*/migrations/__pycache__/
 api/*/migrations/*.py
 api/media/
+/api/*/fixtures/*
+!api/*/fixtures/add_dammies.py
 secret.md
