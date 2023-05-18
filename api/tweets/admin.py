@@ -10,25 +10,42 @@ class TweetAdmin(ModelAdmin):
     ordering=['id']
     readonly_fields=('id','created_on','update_on')
     fieldsets = (
-        (gettext('Tweet Info'),{'fields':('id','user_tweet','text','tweet_img','tweet_like')}),
-        (gettext('Tweet Dates'),{'fields':('created_on','update_on',)})
+        (gettext('Tweet Info'),{'fields':('id','tweet_user','text','tweet_img','tweet_like')}),
+        (gettext('Important dates'),{'fields':('created_on','update_on',)})
     )
-
+    search_fields = ("id","tweet_user","text","tweet_like","created_on")
+    list_display = ("id", "tweet_user","created_on",'tweet_img')
+    filter_horizontal = (
+        "tweet_like",
+    )
 class CommentAdmin(ModelAdmin):
     ordering=['id']
     readonly_fields=('id','created_on')
     fieldsets = (
-        (gettext('Comment Info'),{'fields':('id','user_comment','tweet','comment_img','comment_like')}),
-        (gettext('Comment Dates'),{'fields':('created_on','update_on')})
+        (gettext('Comment Info'),{'fields':('id','comment_user','tweet','comment_img','comment_like')}),
+        (gettext('Important dates'),{'fields':('created_on','update_on')})
+    )
+    search_fields = ("id","comment_user","text","comment_like","created_on")
+    # list_filter = ("id","tweet_user","tweet_like","created_on")
+    list_display = ("id", "comment_user","text", "created_on",'comment_img')
+    filter_horizontal = (
+        "comment_like",
     )
 
 class RetweetAdmin(ModelAdmin):
     ordering=['id']
     readonly_fields=('id','created_on')
     fieldsets = (
-        (gettext('Retweet Info'),{'fields':('id','retweet_user','text','user_tweet','retweet_like')}),
-        (gettext('Retweet Dates'),{'fields':('created_on',)})
+        (gettext('Retweet Info'),{'fields':('id','retweet_user','text','tweet','retweet_like')}),
+        (gettext('Important dates'),{'fields':('created_on',)})
     )
+    search_fields = ("id","retweet_user","text","retweet_like","created_on")
+    # list_filter = ("id","tweet_user","tweet_like","created_on")
+    list_display = ("id", "retweet_user","text", "created_on")
+    filter_horizontal = (
+        "retweet_like",
+    )
+
 
 admin.site.register(Tweet,TweetAdmin)
 admin.site.register(Comment,CommentAdmin)

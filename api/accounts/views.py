@@ -2,8 +2,7 @@ from django.shortcuts import render
 from rest_framework import permissions,status,viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,GenericAPIView,ListCreateAPIView
-from rest_framework.mixins import ListModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin,CreateModelMixin
+from rest_framework.generics import ListAPIView,RetrieveUpdateDestroyAPIView,ListCreateAPIView
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.views.decorators.cache import cache_page
@@ -331,7 +330,7 @@ class AccountAdminInspectView(APIView):
                 dict(zip(columns,row))
                 for row in cursor.fetchall()
             ]
-    
+            cursor.close()
             return Response(
                 data={
                     "result":"success",
