@@ -3,7 +3,7 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from apicfg import settings
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
-from .views import TweetModelView,CommentModelView,RetweetModelView,TweetListView,MyTweetProfileView,TweetProfileModelView,TweetRetrieveView,CommentListView,CommentRetrieveView,TweetCommentModelView,TweetRetweetModelView,TweetAndUserProfileView,TweetTextSearchView,TweetJoinModelView,CommentAndUserProfile
+from .views import TweetModelView,CommentModelView,RetweetModelView,TweetListView,MyTweetProfileView,TweetProfileModelView,TweetRetrieveView,CommentListView,CommentRetrieveView,TweetCommentModelView,TweetRetweetModelView,TweetAndUserProfileView,TweetTextSearchView,TweetJoinModelView,CommentAndUserProfileView,RetweetAndProfileView,TweetCommentView
 
 app_name='tweets'
 router = DefaultRouter()
@@ -23,7 +23,9 @@ urlpatterns = [
     path('v2/comments/retrieve/',CommentRetrieveView.as_view(),name="commentretrieve"),
     path('v4/mytweets/list/',MyTweetProfileView.as_view(),name="mytweets"),
     path('v4/list/get/tweet/',TweetAndUserProfileView.as_view(),name="tweetprofilelists"),
-    path('v4/list/get/comment/',CommentAndUserProfile.as_view(),name="commentprofilelists"),
+    path('v4/list/get/comment/',CommentAndUserProfileView.as_view(),name="commentprofilelists"),
+    path('v4/list/get/retweet/',RetweetAndProfileView.as_view(),name="retweetprofilelists"),
+    path('v6/get/tweet/',TweetCommentView.as_view(),name="tweetcomment"),
     path('',include(router.urls)),
 ]
 

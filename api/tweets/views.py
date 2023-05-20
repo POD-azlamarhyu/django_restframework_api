@@ -384,7 +384,7 @@ class TweetAndUserProfileView(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-class CommentAndUserProfile(APIView):
+class CommentAndUserProfileView(APIView):
     permission_classes = [AllowAny,]
     def get_likes_list(self):
         query = '''
@@ -432,7 +432,7 @@ class CommentAndUserProfile(APIView):
                 on
                     ui.id = upi.user_profile_id
                 order by
-                    ti.created_on asc
+                    ci.created_on asc
             '''
             
             cursor = connection.cursor()
@@ -480,3 +480,204 @@ class CommentAndUserProfile(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+            
+class RetweetAndProfileView(APIView):
+    permission_classes = [AllowAny,]
+    def get_likes_list(self):
+        query = '''
+            select
+                *
+            from
+                tweets_retweet_retweet_like as trl
+        '''
+        cursor = connection.cursor()
+        cursor.execute(query)
+        columns = [col[0] for col in cursor.description]
+        dicts = [
+            dict(zip(columns,row))
+            for row in cursor.fetchall()
+        ]
+        cursor.close()
+        return dicts
+    def get(self,request):
+        try:
+            query = '''
+                select
+                    ui.id as user_id,
+                    ui.email,
+                    ui.is_staff,
+                    ui.is_superuser,
+                    upi.nickname,
+                    upi.account_id,
+                    upi.icon,
+                    upi.created_on as up_created_on,
+                    upi.bio,
+                    upi.link,
+                    ri.id as retweet_id,
+                    ri.text as retweet_text,
+                    ri.created_on as rt_created_on,
+                    ti.id as tweet_id,
+                    ti.text as tweet_text,
+                    ti.tweet_img,
+                    ti.created_on as tweet_created_on,
+                    ti.update_on
+                from
+                    tweets_retweet as ri
+                left join
+                    accounts_user as ui
+                on
+                    ri.retweet_user_id = ui.id
+                left join
+                    accounts_userprofile as upi
+                on
+                    ui.id = upi.user_profile_id
+                left join
+                    tweets_tweet as ti
+                on
+                    ri.tweet_id = ti.id
+                order by
+                    rt_created_on asc
+                limit 10
+            '''
+            
+            cursor = connection.cursor()
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            
+            retweet_dict = [
+                dict(zip(columns,row))
+                for row in cursor.fetchall()
+            ]
+            cursor.close()
+            like_list = self.get_likes_list()
+        
+            for i in range(len(retweet_dict)):
+                likes_user_list = []
+                for like in like_list[:]:
+                    if retweet_dict[i]["retweet_id"] == like["retweet_id"]:
+                        likes_user_list.append(like["user_id"])
+                        like_list.remove(like)
+                        
+                retweet_dict[i]["like"] = likes_user_list
+            
+            
+            return Response(
+                data={
+                    "result":"success",
+                    "content":retweet_dict
+                },
+                status=status.HTTP_200_OK
+            )
+        except ObjectDoesNotExist:
+            return Response(
+                data={
+                    "result":"success",
+                    "content":"None"
+                },
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            print(e)
+            return Response(
+                data={
+                    "result":"error",
+                    "content":"問題が発生"
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class TweetCommentView(APIView):
+    permission_classes = [AllowAny,]
+
+    def get(self,request):
+        if request.data["tid"]:
+            tweet_id = request.data["tid"]
+        elif request.query_params.get("tid",None):
+            tweet_id = request.query_params.get("tid",None)
+            
+        query = '''
+            select
+                ui.id as user_id,
+                ui.email,
+                ui.is_staff,
+                ui.is_superuser,
+                upi.nickname,
+                upi.account_id,
+                upi.icon,
+                upi.created_on,
+                upi.bio,
+                upi.link,
+                ti.id as tweet_id,
+                ti.text,
+                ti.tweet_img,
+                ti.created_on,
+                ti.update_on
+            from
+                tweets_tweet as ti
+            left join
+                accounts_user as ui
+            on
+                ti.tweet_user_id = ui.id
+            left join 
+                accounts_userprofile as upi
+            on
+                ui.id = upi.user_profile_id
+            where
+                ti.id = %s
+        '''
+        cursor = connection.cursor()
+        cursor.execute(query,(tweet_id,))
+        columns = [col[0] for col in cursor.description]
+        res = cursor.fetchone()
+
+        tweet_dict = dict(zip(columns,res))
+        
+        query = '''
+                select
+                    ui.id as user_id,
+                    ui.email,
+                    ui.is_staff,
+                    ui.is_superuser,
+                    upi.nickname,
+                    upi.account_id,
+                    upi.icon,
+                    upi.created_on,
+                    upi.bio,
+                    upi.link,
+                    ci.id as comment_id,
+                    ci.text,
+                    ci.comment_img,
+                    ci.created_on,
+                    ci.update_on
+                from
+                    tweets_comment as ci
+                left join
+                    accounts_user as ui
+                on
+                    ci.comment_user_id = ui.id
+                left join
+                    accounts_userprofile as upi
+                on
+                    ui.id = upi.user_profile_id
+                where
+                    ci.tweet_id = %s
+                limit 10
+            '''
+        cursor.execute(query,(tweet_id,))
+        columns = [col[0] for col in cursor.description]
+        comment_dict = [
+            dict(zip(columns,row))
+            for row in cursor.fetchall()
+        ]
+        cursor.close()
+        tweet_dict["comments"] = comment_dict
+        print(tweet_dict) 
+        return Response(
+                data={
+                    "result":"success",
+                    "content":tweet_dict
+                },
+                status=status.HTTP_200_OK
+            )
+        
+        
