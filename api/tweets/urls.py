@@ -10,11 +10,11 @@ router = DefaultRouter()
 router.register('v1/tweet',TweetModelView)
 router.register('v1/comment',CommentModelView)
 router.register('v1/retweet',RetweetModelView)
-router.register('v3/tweets/profiles',TweetProfileModelView)
-router.register('v3/tweets/comment',TweetCommentModelView)
-router.register('v3/tweets/retweets',TweetRetweetModelView)
-router.register('v5/list/tweet/research',TweetTextSearchView)
-router.register('v5/list/tweet/relation',TweetJoinModelView)
+router.register('v3/tweets/profiles',TweetProfileModelView,basename="tweetprofile")
+router.register('v3/tweets/comment',TweetCommentModelView,basename="tweetcomment")
+router.register('v3/tweets/retweets',TweetRetweetModelView,basename="tweetretweet")
+router.register('v5/list/tweet/research',TweetTextSearchView,basename="tweetresarch")
+router.register('v5/list/tweet/relation',TweetJoinModelView,basename="tweetrelation")
 
 urlpatterns = [
     path('v2/tweets/list/',TweetListView.as_view(),name="tweetlist"),
