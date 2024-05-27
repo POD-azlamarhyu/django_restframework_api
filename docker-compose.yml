@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: DockerfilePsql
     volumes:
-      - pgdata:/var/lib/postgres/data
+      - psqldata:/var/lib/postgresql/data
     ports:
       - '5432:5432'
     environment:
@@ -24,8 +24,10 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
+    links:
+      - db
     depends_on:
       - db
 
 volumes:
-  pgdata: {}
+  psqldata:
