@@ -13,11 +13,9 @@ class TweetAdmin(ModelAdmin):
         (gettext('Tweet Info'),{'fields':('id','tweet_user','text','tweet_img')}),
         (gettext('Important dates'),{'fields':('created_on','update_on',)})
     )
-    search_fields = ("id","tweet_user","text","tweet_like","created_on")
+    search_fields = ("id","tweet_user","text","created_on")
     list_display = ("id", "tweet_user","created_on",'tweet_img')
-    filter_horizontal = (
-        "tweet_like",
-    )
+
 class CommentAdmin(ModelAdmin):
     ordering=['id']
     readonly_fields=('id','created_on')
@@ -25,12 +23,10 @@ class CommentAdmin(ModelAdmin):
         (gettext('Comment Info'),{'fields':('id','comment_user','tweet','comment_img')}),
         (gettext('Important dates'),{'fields':('created_on','update_on')})
     )
-    search_fields = ("id","comment_user","text","comment_like","created_on")
+    search_fields = ("id","comment_user","text","created_on")
     # list_filter = ("id","tweet_user","tweet_like","created_on")
     list_display = ("id", "comment_user","text", "created_on",'comment_img')
-    filter_horizontal = (
-        "comment_like",
-    )
+
 
 class RetweetAdmin(ModelAdmin):
     ordering=['id']
@@ -39,12 +35,10 @@ class RetweetAdmin(ModelAdmin):
         (gettext('Retweet Info'),{'fields':('id','retweet_user','text','tweet')}),
         (gettext('Important dates'),{'fields':('created_on',)})
     )
-    search_fields = ("id","retweet_user","text","retweet_like","created_on")
+    search_fields = ("id","retweet_user","text","created_on")
     # list_filter = ("id","tweet_user","tweet_like","created_on")
     list_display = ("id", "retweet_user","text", "created_on")
-    filter_horizontal = (
-        "retweet_like",
-    )
+
 
 
 admin.site.register(Tweet,TweetAdmin)

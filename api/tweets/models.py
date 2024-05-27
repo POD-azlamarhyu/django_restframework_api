@@ -43,7 +43,6 @@ class Tweet(models.Model):
     tweet_like = models.ManyToManyField(
         User,
         through='TweetLikeTBL',
-        related_name="tweet_like_tbl"
     )
     
     def __str__(self):
@@ -53,13 +52,11 @@ class TweetLikeTBL(models.Model):
     tweet = models.ForeignKey(
         Tweet,
         on_delete=models.CASCADE,
-        related_name="tweet_like_id",
         verbose_name="tweet id"
     )
     tweet_like_user=models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="tweet_like_user_id",
         verbose_name="user id"
     )
     created_on = models.DateTimeField(
@@ -100,7 +97,6 @@ class Comment(models.Model):
     )
     comment_like = models.ManyToManyField(
         User,
-        related_name="comment_like_tbl",
         through='CommentLikeTBL',
     )
     update_on = models.DateTimeField(
@@ -116,13 +112,11 @@ class CommentLikeTBL(models.Model):
     comment = models.ForeignKey(
         Comment,
         on_delete=models.CASCADE,
-        related_name="comment_like_id",
         verbose_name="comment id"
     )
     comment_like_user=models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="comment_like_user_id",
         verbose_name="user id"
     )
     created_on = models.DateTimeField(
@@ -154,7 +148,6 @@ class Retweet(models.Model):
     )
     retweet_like= models.ManyToManyField(
         User,
-        related_name="retweet_like",
         through='RetweetLikeTBL',
     )
     created_on = models.DateTimeField(
@@ -174,13 +167,11 @@ class RetweetLikeTBL(models.Model):
     retweet = models.ForeignKey(
         Retweet,
         on_delete=models.CASCADE,
-        related_name="retweet_like_id",
         verbose_name="retweet id"
     )
     retweet_like_user=models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="retweet_like_user_id",
         verbose_name="user id"
     )
     created_on = models.DateTimeField(
