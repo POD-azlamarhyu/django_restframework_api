@@ -32,7 +32,8 @@ class Tweet(models.Model):
     )
     created_on = models.DateTimeField(
         verbose_name="tweet date",
-        auto_now_add=True
+        auto_now_add=True,
+        editable=False
     )
     update_on = models.DateTimeField(
         verbose_name="tweet edit",
@@ -41,13 +42,37 @@ class Tweet(models.Model):
     )
     tweet_like = models.ManyToManyField(
         User,
-        related_name="tweet_like",
-        blank=True    
+        through='TweetLikeTBL',
+        related_name="tweet_like_tbl"
     )
     
     def __str__(self):
         return  str(self.id)+" : "+self.text
+
+class TweetLikeTBL(models.Model):
+    tweet = models.ForeignKey(
+        Tweet,
+        on_delete=models.CASCADE,
+        related_name="tweet_like_id",
+        verbose_name="tweet id"
+    )
+    tweet_like_user=models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="tweet_like_user_id",
+        verbose_name="user id"
+    )
+    created_on = models.DateTimeField(
+        verbose_name="like date",
+        auto_now_add=True,
+        editable=False
+    )
+    class Meta:
+        unique_together=('tweet','tweet_like_user')
     
+    def __str__(self) -> str:
+        return f'{self.tweet}:{self.tweet_like_user}'
+
 class Comment(models.Model):
     text = models.TextField(
         verbose_name="comment",max_length=500
@@ -69,12 +94,14 @@ class Comment(models.Model):
         upload_to=return_comment_image_path
     )
     created_on=models.DateTimeField(
-        auto_now_add=True
+        auto_now_add=True,
+        verbose_name="comment date",
+        editable=False
     )
     comment_like = models.ManyToManyField(
         User,
-        related_name="comment_like",
-        blank=True    
+        related_name="comment_like_tbl",
+        through='CommentLikeTBL',
     )
     update_on = models.DateTimeField(
         verbose_name="comment edit",
@@ -84,6 +111,30 @@ class Comment(models.Model):
     
     def __str__(self):
         return str(self.id)+" : "+self.text
+
+class CommentLikeTBL(models.Model):
+    comment = models.ForeignKey(
+        Comment,
+        on_delete=models.CASCADE,
+        related_name="comment_like_id",
+        verbose_name="comment id"
+    )
+    comment_like_user=models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="comment_like_user_id",
+        verbose_name="user id"
+    )
+    created_on = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="comment date",
+        editable=False
+    )
+    class Meta:
+        unique_together=('comment','comment_like_user')
+    
+    def __str__(self) -> str:
+        return f'{self.comment}:{self.comment_like_user}'
 
 class Retweet(models.Model):
     
@@ -104,10 +155,41 @@ class Retweet(models.Model):
     retweet_like= models.ManyToManyField(
         User,
         related_name="retweet_like",
-        blank=True    
+        through='RetweetLikeTBL',
     )
     created_on = models.DateTimeField(
-        auto_now_add=True
+        auto_now_add=True,
+        editable=False,
+        verbose_name="retweet date"
+    )
+    update_on = models.DateTimeField(
+        verbose_name="retweet edit",
+        default=timezone.now,
+        null=True
     )
     def __str__(self):
         return str(self.id)+" : "+self.text
+
+class RetweetLikeTBL(models.Model):
+    retweet = models.ForeignKey(
+        Retweet,
+        on_delete=models.CASCADE,
+        related_name="retweet_like_id",
+        verbose_name="retweet id"
+    )
+    retweet_like_user=models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="retweet_like_user_id",
+        verbose_name="user id"
+    )
+    created_on = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="retweet date",
+        editable=False
+    )
+    class Meta:
+        unique_together=('retweet','retweet_like_user')
+    
+    def __str__(self) -> str:
+        return f'{self.retweet}:{self.retweet_like_user}'

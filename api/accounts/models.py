@@ -100,7 +100,8 @@ class UserProfile(models.Model):
     )
     created_on=models.DateTimeField(
         verbose_name="created on",
-        auto_now_add=True
+        auto_now_add=True,
+        editable=False
     )
     update_at = models.DateTimeField(
         verbose_name="update date",
@@ -183,7 +184,8 @@ class UserChannel(models.Model):
     )
     created_on=models.DateTimeField(
         verbose_name="created on",
-        default=timezone.now
+        auto_now_add=True,
+        editable=False,
     )
     update_at = models.DateTimeField(
         verbose_name="update date",
