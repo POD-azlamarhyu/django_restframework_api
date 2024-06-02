@@ -1,4 +1,4 @@
-FROM postgres:13.4-buster
+FROM postgres:15.7-bullseye
 
 ENV LANGUAGE ja_JP:ja
 ENV TZ JST-9
