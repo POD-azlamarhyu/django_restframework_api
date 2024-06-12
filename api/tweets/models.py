@@ -44,6 +44,8 @@ class Tweet(models.Model):
         User,
         through='TweetLikeTBL',
     )
+    class Meta:
+        db_table="tweet"
     
     def __str__(self):
         return  str(self.id)+" : "+self.text
@@ -65,6 +67,7 @@ class TweetLikeTBL(models.Model):
         editable=False
     )
     class Meta:
+        db_table="tweet_like"
         unique_together=('tweet','tweet_like_user')
     
     def __str__(self) -> str:
@@ -104,7 +107,9 @@ class Comment(models.Model):
         default=timezone.now,
         null=True
     )
-    
+    class Meta:
+        db_table="comment"
+
     def __str__(self):
         return str(self.id)+" : "+self.text
 
@@ -125,6 +130,7 @@ class CommentLikeTBL(models.Model):
         editable=False
     )
     class Meta:
+        db_table="comment_like"
         unique_together=('comment','comment_like_user')
     
     def __str__(self) -> str:
@@ -160,6 +166,9 @@ class Retweet(models.Model):
         default=timezone.now,
         null=True
     )
+    class Meta:
+        db_table="retweet"
+
     def __str__(self):
         return str(self.id)+" : "+self.text
 
@@ -180,6 +189,7 @@ class RetweetLikeTBL(models.Model):
         editable=False
     )
     class Meta:
+        db_table="retweet_like"
         unique_together=('retweet','retweet_like_user')
     
     def __str__(self) -> str:

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'djoser',
     'tweets',
     'django_extensions',
+    'debug_toolbar',
     # 'security',
 ]
 
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'apicfg.urls'
@@ -187,4 +189,8 @@ LOGGING = {
             'level': 'DEBUG',
         },
     },
+}
+
+DEBUG_TOOLBAR_CONFIG={
+    "SHOW_TOOLBAR_CALLBACK" : lambda request: True,
 }

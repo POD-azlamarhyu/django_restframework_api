@@ -6,16 +6,17 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView,ListCreateAPIVi
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.views.decorators.cache import cache_page
-from django.db.models import Q,Prefetch,F,Count,FilteredRelation
+from django.db.models import Q,Prefetch,F,Count,FilteredRelation,Max,Min,Avg,Sum,Subquery,OuterRef,Case,When,Value
 from django.db import connection
 from django.forms.models import model_to_dict
+from django.db.models.expressions import RawSQL
 import json
 from rest_framework.decorators import action
 from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.http import JsonResponse,Http404
 from rest_framework.permissions import AllowAny,IsAuthenticated,IsAdminUser,BasePermission
-from .models import Tweet,Comment,Retweet
+from .models import Tweet,Comment,Retweet,TweetLikeTBL,RetweetLikeTBL,CommentLikeTBL
 from .serializer import TweetSerializer,CommentSerializer,RetweetSerializer,TweetModelSerializer,CommentModelSerializer,RetweetModelSerializer,TweetCommentSerializer,RetweetTweetSerializer
 from django.db.models.functions import TruncDate
 User = get_user_model()
@@ -679,5 +680,125 @@ class TweetCommentView(APIView):
                 },
                 status=status.HTTP_200_OK
             )
-        
-        
+
+class TweetLikeToggleView(APIView):
+    permission_classes=[AllowAny,]
+    
+    def post(self,request):
+        try:
+            user_id = request.user.id
+            tweet_id = request.data["id"]
+            tweet_like_recode=TweetLikeTBL.objects.filter(
+                tweet_like_user=user_id,
+                tweet=tweet_id
+            ).first()
+            
+            if tweet_like_recode:
+                tweet_like_recode.delete()
+                content = "delete like info."
+            else:
+                new_tweet_like = TweetLikeTBL(
+                    tweet_like_user=user_id,
+                    tweet=tweet_id
+                )
+                
+                new_tweet_like.save()
+                content = "post like info."
+            return Response(
+                data={
+                    "result":"success",
+                    "content":content,
+                    "data":{}
+                },
+                status=status.HTTP_200_OK
+            )
+        except Exception as ex:
+            print(ex)
+            return Response(
+                data={
+                    "result":"error",
+                    "content":"問題が発生"
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class CommentLikeToggleView(APIView):
+    permission_classes=[AllowAny,]
+    def post(self,request):
+        try:
+            user_id = request.user.id
+            comment_id = request.data["id"]
+            comment_like_recode=CommentLikeTBL.objects.filter(
+                comment_like_user=user_id,
+                comment=comment_id
+            ).first()
+            
+            if comment_like_recode:
+                comment_like_recode.delete()
+                content = "delete like info."
+            else:
+                new_comment_like = TweetLikeTBL(
+                    comment_like_user=user_id,
+                    comment=comment_id
+                )
+                
+                new_comment_like.save()
+                content = "post like info."
+            return Response(
+                data={
+                    "result":"success",
+                    "content":content,
+                    "data":{}
+                },
+                status=status.HTTP_200_OK
+            )
+        except Exception as ex:
+            print(ex)
+            return Response(
+                data={
+                    "result":"error",
+                    "content":"問題が発生"
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+class RetweetLikeToggleView(APIView):
+    permission_classes=[AllowAny,]
+    def post(self,request):
+        try:
+            user_id = request.user.id
+            retweet_id = request.data["id"]
+            retweet_like_recode=RetweetLikeTBL.objects.filter(
+                retweet_like_user=user_id,
+                retweet=retweet_id
+            ).first()
+            
+            if retweet_like_recode:
+                retweet_like_recode.delete()
+                content = "delete like info."
+            else:
+                new_retweet_like = TweetLikeTBL(
+                    retweet_like_user=user_id,
+                retweet=retweet_id
+                )
+                
+                new_retweet_like.save()
+                content = "post like info."
+            return Response(
+                data={
+                    "result":"success",
+                    "content":content,
+                    "data":{}
+                },
+                status=status.HTTP_200_OK
+            )
+        except Exception as ex:
+            print(ex)
+            return Response(
+                data={
+                    "result":"error",
+                    "content":"問題が発生"
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

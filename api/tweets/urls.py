@@ -3,7 +3,7 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from apicfg import settings
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
-from .views import TweetModelView,CommentModelView,RetweetModelView,TweetListView,MyTweetProfileView,TweetProfileModelView,TweetRetrieveView,CommentListView,CommentRetrieveView,TweetCommentModelView,TweetRetweetModelView,TweetAndUserProfileView,TweetTextSearchView,TweetJoinModelView,CommentAndUserProfileView,RetweetAndProfileView,TweetCommentView
+from .views import TweetModelView,CommentModelView,RetweetModelView,TweetListView,MyTweetProfileView,TweetProfileModelView,TweetRetrieveView,CommentListView,CommentRetrieveView,TweetCommentModelView,TweetRetweetModelView,TweetAndUserProfileView,TweetTextSearchView,TweetJoinModelView,CommentAndUserProfileView,RetweetAndProfileView,TweetCommentView,TweetLikeToggleView,CommentLikeToggleView,RetweetLikeToggleView
 
 app_name='tweets'
 router = DefaultRouter()
@@ -26,6 +26,9 @@ urlpatterns = [
     path('v4/list/get/comment/',CommentAndUserProfileView.as_view(),name="commentprofilelists"),
     path('v4/list/get/retweet/',RetweetAndProfileView.as_view(),name="retweetprofilelists"),
     path('v6/get/tweet/',TweetCommentView.as_view(),name="tweetcomment"),
+    path('v7/post/tweet_like',TweetLikeToggleView.as_view(),name="tweetliketoggle"),
+    path('v7/post/comment_like',CommentLikeToggleView.as_view(),name="commentliketoggle"),
+    path('v7/post/retweet_like',RetweetLikeToggleView.as_view(),name="retweetliketoggle"),
     path('',include(router.urls)),
 ]
 

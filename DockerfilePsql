@@ -5,7 +5,7 @@ ENV TZ JST-9
 ENV TERM xterm
 ENV TZ Asia/Tokyo
 RUN apt-get update && apt-get install -y
-RUN mkdir -p /psql/data
-COPY . ./psql/data
-WORKDIR /psql/data
+RUN mkdir -p /psql/data/
+WORKDIR /psql/data/
+RUN touch /psql/data/postgres.sql
 EXPOSE 5432

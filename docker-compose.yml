@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: DockerfilePsql
     volumes:
+      - ./psql:/psql/data
       - psqldata:/var/lib/postgresql/data
     ports:
       - '5432:5432'

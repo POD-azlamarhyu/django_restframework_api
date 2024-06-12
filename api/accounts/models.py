@@ -83,6 +83,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRE_FIELDS = ['email']
     
+    
     def __str__(self):
         return str(self.pk)+" : " +str(self.email)
     
@@ -132,6 +133,9 @@ class UserProfile(models.Model):
         max_length=1000,
         blank=True
     )
+    
+    class Meta:
+        db_table="user_profile"
     
     def __str__(self):
         
@@ -192,6 +196,9 @@ class UserChannel(models.Model):
         null=True,
         default=timezone.now
     )
+    
+    class Meta:
+        db_table="user_channel"
     
     def __str__(self):
             
