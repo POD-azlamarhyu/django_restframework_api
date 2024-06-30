@@ -19,7 +19,15 @@ from rest_framework.permissions import AllowAny,IsAuthenticated,IsAdminUser,Base
 from .models import Tweet,Comment,Retweet,TweetLikeTBL,RetweetLikeTBL,CommentLikeTBL
 from .serializer import TweetSerializer,CommentSerializer,RetweetSerializer,TweetModelSerializer,CommentModelSerializer,RetweetModelSerializer,TweetCommentSerializer,RetweetTweetSerializer
 from django.db.models.functions import TruncDate
+from django.utils.decorators import method_decorator
 User = get_user_model()
+
+def dictfetchall(cursor):
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns,row))
+        for row in cursor.fetchall()
+    ]
 
 class TweetModelView(viewsets.ModelViewSet):
     queryset = Tweet.objects.all()
@@ -684,6 +692,7 @@ class TweetCommentView(APIView):
 class TweetLikeToggleView(APIView):
     permission_classes=[AllowAny,]
     
+    @method_decorator(csrf_protect)
     def post(self,request):
         try:
             user_id = request.user.id
@@ -725,6 +734,8 @@ class TweetLikeToggleView(APIView):
 
 class CommentLikeToggleView(APIView):
     permission_classes=[AllowAny,]
+    
+    @method_decorator(csrf_protect)
     def post(self,request):
         try:
             user_id = request.user.id
@@ -765,6 +776,8 @@ class CommentLikeToggleView(APIView):
 
 class RetweetLikeToggleView(APIView):
     permission_classes=[AllowAny,]
+    
+    @method_decorator(csrf_protect)
     def post(self,request):
         try:
             user_id = request.user.id
@@ -802,3 +815,59 @@ class RetweetLikeToggleView(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+class TweetWithUserModelView(APIView):
+    permission_classes=[IsAdminUser,]
+    
+    def get(self,request):
+        tweet_like_subquery=TweetLikeTBL.objects.values("id","tweet_id").annotate(tweet_like_count=Count("id")).order_by("tweet_id")
+        tweet_like_cursor_subquery = '''
+            select
+                tweet_id,
+                count(tweet_like_user_id) as tweet_like_count
+            from
+                tweet_like
+            group by
+                tweet_id
+        '''
+        cursor = connection.cursor()
+        
+        
+        cursor_query='''
+            select
+                *
+            from
+                tweet
+            left join
+                accounts_user as au
+            on
+                tweet.tweet_user_id = au.id
+            left join 
+                user_profile as up
+            on
+                tweet.tweet_user_id = up.user_profile_id
+            left join
+                (
+                    select
+                        tweet_id,
+                        count(tweet_like_user_id) as tweet_like_count
+                    from
+                        tweet_like
+                    group by
+                        tweet_id
+                ) as tls
+            on
+                tweet.id = tls.tweet_id
+        '''
+        cursor.execute(cursor_query)
+        tweet_like_list = dictfetchall(cursor)
+        content="info."
+        return Response(
+                data={
+                    "result":"success",
+                    "content":content,
+                    "data":tweet_like_list
+                },
+                status=status.HTTP_200_OK
+            )
+        

@@ -234,6 +234,7 @@ class UserChannelView(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    @method_decorator(csrf_protect)
     def post(self,request,format=None):
         try:
             query = UserChannel(

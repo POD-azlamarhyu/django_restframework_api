@@ -39,11 +39,19 @@ class RetweetAdmin(ModelAdmin):
     # list_filter = ("id","tweet_user","tweet_like","created_on")
     list_display = ("id", "retweet_user","text", "created_on")
 
-
+class TweetLikeTBLAdmin(ModelAdmin):
+    ordering=['id']
+    readonly_fields=('id','created_on')
+    fieldsets = (
+        (gettext('TweetLike Info'),{'fields':('id','tweet_like_user','tweet')}),
+        (gettext('Important dates'),{'fields':('created_on',)}),
+    )
+    search_fields = ("id","tweet","tweet_like_user","created_on",)
+    list_display = ("id","tweet","tweet_like_user","created_on",)
 
 admin.site.register(Tweet,TweetAdmin)
 admin.site.register(Comment,CommentAdmin)
 admin.site.register(Retweet,RetweetAdmin)
-admin.site.register(TweetLikeTBL)
+admin.site.register(TweetLikeTBL,TweetLikeTBLAdmin)
 admin.site.register(CommentLikeTBL)
 admin.site.register(RetweetLikeTBL)
