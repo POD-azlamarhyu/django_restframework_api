@@ -88,9 +88,9 @@ WSGI_APPLICATION = 'apicfg.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "djangoapidb",
-        'USER': "bigwavenikiadmin",
-        'PASSWORD': "apipw",
+        'NAME': dbname,
+        'USER': dbuser,
+        'PASSWORD': dbpw,
         'HOST':'db',
         'PORT':5432,
     }
