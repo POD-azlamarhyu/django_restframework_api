@@ -155,3 +155,51 @@ class TweetLikeTBLFactory(DjangoModelFactory):
         date_start=(datetime.now() - timedelta(days=1000)).date(),
         date_end=datetime.now(),
     )
+    
+    
+class CommentLikeTBLFactory(DjangoModelFactory):
+    class Meta:
+        model = CommentLikeTBL
+        django_get_or_create=(('comment_like_user','comment'))
+    
+    @factory.lazy_attribute
+    def comment_like_user(self):
+        user=User.objects.all().order_by('?').first()
+        return user
+    
+    @factory.lazy_attribute
+    def comment(self):
+        admin_users = User.objects.filter(is_staff=True).values_list("id",flat=True)
+        uuid_list=[str(col) for col in admin_users]
+        comment_id = Comment.objects.filter(comment_user__in=uuid_list).order_by('?').first()
+        return comment_id
+    
+    created_on = Faker(
+        "date_between_dates",
+        date_start=(datetime.now() - timedelta(days=1000)).date(),
+        date_end=datetime.now(),
+    )
+
+
+class RetweetLikeTBLFactory(DjangoModelFactory):
+    class Meta:
+        model = RetweetLikeTBL
+        django_get_or_create=(('retweet_like_user','retweet'))
+    
+    @factory.lazy_attribute
+    def retweet_like_user(self):
+        user=User.objects.all().order_by('?').first()
+        return user
+    
+    @factory.lazy_attribute
+    def retweet(self):
+        admin_users = User.objects.filter(is_staff=True).values_list("id",flat=True)
+        uuid_list=[str(col) for col in admin_users]
+        retweet_id = Retweet.objects.filter(retweet_user__in=uuid_list).order_by('?').first()
+        return retweet_id
+    
+    created_on = Faker(
+        "date_between_dates",
+        date_start=(datetime.now() - timedelta(days=1000)).date(),
+        date_end=datetime.now(),
+    )
