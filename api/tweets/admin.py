@@ -49,9 +49,30 @@ class TweetLikeTBLAdmin(ModelAdmin):
     search_fields = ("id","tweet","tweet_like_user","created_on",)
     list_display = ("id","tweet","tweet_like_user","created_on",)
 
+class CommentLikeTBLAdmin(ModelAdmin):
+    ordering=['id']
+    readonly_fields=('id','created_on')
+    fieldsets = (
+        (gettext('CommentLike Info'),{'fields':('id','comment_like_user','comment')}),
+        (gettext('Important dates'),{'fields':('created_on',)}),
+    )
+    
+    search_fields = ("id",'comment_like_user','comment',"created_on",)
+    list_display = ("id",'comment_like_user','comment',"created_on",)
+    
+class RetweetLikeTBLAdmin(ModelAdmin):
+    ordering=['id']
+    readonly_fields=('id','created_on')
+    fieldsets = (
+        (gettext('CommentLike Info'),{'fields':('id','retweet_like_user','retweet')}),
+        (gettext('Important dates'),{'fields':('created_on',)}),
+    )
+    
+    search_fields = ("id",'retweet_like_user','retweet',"created_on",)
+    list_display = ("id",'retweet_like_user','retweet',"created_on",)
 admin.site.register(Tweet,TweetAdmin)
 admin.site.register(Comment,CommentAdmin)
 admin.site.register(Retweet,RetweetAdmin)
 admin.site.register(TweetLikeTBL,TweetLikeTBLAdmin)
-admin.site.register(CommentLikeTBL)
-admin.site.register(RetweetLikeTBL)
+admin.site.register(CommentLikeTBL,CommentLikeTBLAdmin)
+admin.site.register(RetweetLikeTBL,RetweetLikeTBLAdmin)
