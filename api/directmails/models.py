@@ -8,7 +8,7 @@ import string
 # Create your models here.
 User = get_user_model()
 
-def return_room_id(instance):
+def return_room_id():
     characters = string.ascii_letters + string.digits
     random_string = ''.join(random.choice(characters) for i in range(15))
     return random_string
@@ -109,6 +109,11 @@ class DirectMailMessage(models.Model):
         verbose_name="message text",
         blank=True,
         max_length=500
+    )
+    dm_room=models.ForeignKey(
+        DirectMailRoom,
+        related_name="message_room_id",
+        on_delete=models.CASCADE
     )
     image=models.ImageField(
         verbose_name="dm image",
