@@ -45,6 +45,7 @@ class DirectMailRoom(models.Model):
         max_length=50,
         unique=False,
         blank=True,
+        null=True
     )
     room_image=models.ImageField(
         verbose_name="room image",
@@ -70,6 +71,14 @@ class DirectMailRoom(models.Model):
         null=True
     )
     
+    class Meta:
+        db_table="dm_room"
+    
+    def __str__(self) -> str:
+        if self.room_name is None:
+            return f'{self.id} : {self.room_id}'
+        else:
+            return f'{self.pk} : {self.room_name}'
 class DMRoomJoinUser(models.Model):
     join_user = models.ForeignKey(
         User,
@@ -87,6 +96,8 @@ class DMRoomJoinUser(models.Model):
         null=True,
     )
     
+    class Meta:
+        db_table="dmroom_participation"
 class DirectMailMessage(models.Model):
     
     message_user=models.ForeignKey(
@@ -122,3 +133,9 @@ class DirectMailMessage(models.Model):
         default=timezone.now,
         null=True
     )
+    class Meta:
+        db_table="dm_message"
+    
+    def __str__(self) -> str:
+        return f'{self.id} : {self.message_user}'
+        
