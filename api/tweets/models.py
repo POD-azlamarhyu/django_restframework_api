@@ -1,4 +1,3 @@
-from distutils.command.upload import upload
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -126,7 +125,7 @@ class CommentLikeTBL(models.Model):
     )
     created_on = models.DateTimeField(
         auto_now_add=True,
-        verbose_name="comment date",
+        verbose_name="like date",
         editable=False
     )
     class Meta:
@@ -185,7 +184,7 @@ class RetweetLikeTBL(models.Model):
     )
     created_on = models.DateTimeField(
         auto_now_add=True,
-        verbose_name="retweet date",
+        verbose_name="like date",
         editable=False
     )
     class Meta:

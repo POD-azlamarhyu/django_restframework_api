@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'tweets',
     'django_extensions',
     'debug_toolbar',
-    # 'security',
+    'directmails',
 ]
 
 MIDDLEWARE = [
