@@ -24,6 +24,7 @@ urlpatterns = [
     path('auth/', include('accounts.urls')),
     path('app/api/',include('tweets.urls')),
     path('auth/account/',include('djoser.urls.jwt')),
+    path('app/api/',include('directmails.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 

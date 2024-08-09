@@ -32,28 +32,28 @@ def dictfetchall(cursor):
 class TweetModelView(viewsets.ModelViewSet):
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     def perform_create(self,serializer):
         serializer.save(user_tweet=self.request.user)
 
 class CommentModelView(viewsets.ModelViewSet):
     queryset=Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     def perform_create(self,serializer):
         serializer.save(user_comment=self.request.user)
         
 class RetweetModelView(viewsets.ModelViewSet):
     queryset=Retweet.objects.all()
     serializer_class = RetweetSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     def perform_create(self,serializer):
         serializer.save(retweet_user=self.request.user)
 
 class TweetListView(ListCreateAPIView):
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     def list(self,request):
         queryset=self.get_queryset()
         serializer=TweetSerializer(queryset,many=True)
@@ -66,7 +66,7 @@ class TweetListView(ListCreateAPIView):
 class TweetRetrieveView(RetrieveUpdateDestroyAPIView):
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     def get(self,request,pk):
         queryset=self.get_queryset(pk=pk)
         serializer=TweetSerializer(queryset,many=True)
@@ -79,7 +79,7 @@ class TweetRetrieveView(RetrieveUpdateDestroyAPIView):
 class CommentListView(ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     def list(self,request):
         queryset=self.get_queryset()
         serializer=CommentSerializer(queryset,many=True)
@@ -103,20 +103,20 @@ class CommentRetrieveView(RetrieveUpdateDestroyAPIView):
 class TweetProfileModelView(viewsets.ModelViewSet):
     queryset = Tweet.objects.all().select_related('user_tweet').annotate()
     serializer_class=TweetModelSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
 class TweetCommentModelView(viewsets.ModelViewSet):
     queryset = Tweet.objects.select_related('user').prefetch_related('comment').all()
     serializer_class=TweetCommentSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
 class TweetRetweetModelView(viewsets.ModelViewSet):
     queryset=Tweet.objects.select_related('user').prefetch_related('retweet').all()
     serializer_class=RetweetTweetSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     
 
 
 class MyTweetProfileView(APIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     def get(self,request):
         try:
             uid = request.user.id
@@ -161,7 +161,7 @@ class MyTweetProfileView(APIView):
                     ti.created_on asc
             '''
             cursor = connection.cursor()
-            cursor.execute(query,(uid,))
+            cursor.execute(query % (uid))
             columns = [col[0] for col in cursor.description]
             print(cursor.description)
             tweet_dict = [
@@ -195,7 +195,7 @@ class MyTweetProfileView(APIView):
 class TweetJoinModelView(viewsets.ModelViewSet):
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
 
     @action(methods=['GET'],detail=True)
     def tweet_list(self,request,pk=None):
@@ -224,7 +224,7 @@ class TweetJoinModelView(viewsets.ModelViewSet):
 class TweetTextSearchView(viewsets.ModelViewSet):
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     
     @action(methods=['GET'],detail=True)
     def text_single(self,request,pk=None):
@@ -298,7 +298,7 @@ class TweetTextSearchView(viewsets.ModelViewSet):
 
 
 class TweetAndUserProfileView(APIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     
     def get_likes_list(self):
         query = '''
@@ -394,7 +394,7 @@ class TweetAndUserProfileView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 class CommentAndUserProfileView(APIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     def get_likes_list(self):
         query = '''
             select
@@ -491,7 +491,7 @@ class CommentAndUserProfileView(APIView):
             )
             
 class RetweetAndProfileView(APIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     def get_likes_list(self):
         query = '''
             select
@@ -596,7 +596,7 @@ class RetweetAndProfileView(APIView):
             )
 
 class TweetCommentView(APIView):
-    permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
 
     def get(self,request):
         if request.data["tid"]:
@@ -635,7 +635,7 @@ class TweetCommentView(APIView):
                 ti.id = %s
         '''
         cursor = connection.cursor()
-        cursor.execute(query,(tweet_id,))
+        cursor.execute(query % (tweet_id))
         columns = [col[0] for col in cursor.description]
         res = cursor.fetchone()
 
@@ -672,7 +672,7 @@ class TweetCommentView(APIView):
                     ci.tweet_id = %s
                 limit 10
             '''
-        cursor.execute(query,(tweet_id,))
+        cursor.execute(query % (tweet_id))
         columns = [col[0] for col in cursor.description]
         comment_dict = [
             dict(zip(columns,row))
@@ -690,7 +690,7 @@ class TweetCommentView(APIView):
             )
 
 class TweetLikeToggleView(APIView):
-    permission_classes=[AllowAny,]
+    permission_classes=[IsAuthenticated,]
     
     @method_decorator(csrf_protect)
     def post(self,request):
@@ -733,7 +733,7 @@ class TweetLikeToggleView(APIView):
 
 
 class CommentLikeToggleView(APIView):
-    permission_classes=[AllowAny,]
+    permission_classes=[IsAuthenticated,]
     
     @method_decorator(csrf_protect)
     def post(self,request):
@@ -775,7 +775,7 @@ class CommentLikeToggleView(APIView):
             )
 
 class RetweetLikeToggleView(APIView):
-    permission_classes=[AllowAny,]
+    permission_classes=[IsAuthenticated,]
     
     @method_decorator(csrf_protect)
     def post(self,request):
