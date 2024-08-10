@@ -13,6 +13,7 @@ router.register('v1/directmail/dmmessage',DMMessageModelViewSet,basename="dmmess
 
 
 urlpatterns=[
+    path('v1/directmail/dmroom_and_post_view/',DMRoomAPIView.as_view(),name="dmroompostget"),
     path('',include(router.urls)),
 ]
 
