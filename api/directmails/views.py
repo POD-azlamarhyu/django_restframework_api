@@ -252,3 +252,53 @@ class DMRoomDetailAPIView(APIView):
                 data=rdata,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+class DMRJoinUserDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated,]
+    
+    def get(self,request,pk,format=None):
+        rdata={}
+        try:
+            uid=request.user.id
+            query='''
+                select
+                    *
+                from
+                    dmroom_participation as dmp
+                left join
+                    (
+                        select
+                            *
+                        from
+                            accounts_user as ui
+                        left join
+                            user_profile as upi
+                        on
+                            ui.id=upi.user_profile_id
+                    ) as ui_tbl
+                on
+                    dmp.join_user_id = ui_tbl.id
+                left join
+                    dm_room as dmr
+                on
+                    dmr.id = dmp.dmroom_id
+                where
+                    dmp.dmroom_id = %s
+            '''
+            cursor = connection.cursor()
+            cursor.execute(query % (pk))
+            rdata["result"] = "success"
+            rdata["content"]=dictfetchall(cursor)
+            return Response(
+                data=rdata,
+                status=status.HTTP_200_OK
+            )
+            
+        except Exception as e:
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
