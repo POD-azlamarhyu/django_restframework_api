@@ -165,6 +165,7 @@ class DMRJoinUserListAPIView(APIView):
                 data=rdata,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
     @method_decorator(csrf_protect)
     def post(self,request,format=None):
         rdata={}
@@ -248,6 +249,37 @@ class DMRoomDetailAPIView(APIView):
             
             rdata["result"] = "failture"
             rdata["message"]= "error."
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    def delete(self,request,pk,format=None):
+        rdata={}
+        try:
+            uid=request.user.id
+            dmroom_obj=DirectMailRoom.objects.filter(
+                id=pk,
+                create_room_user=uid
+            ).first()
+            if dmroom_obj is None:
+                rdata["result"] = "failture"
+                rdata["message"]= "error."
+                return Response(
+                    data=rdata,
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            dmroom_obj.delete()
+            rdata["result"] = "success"
+            rdata["message"]="deleted message."
+            return Response(
+                data=rdata,
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except Exception as e:
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            
             return Response(
                 data=rdata,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -376,6 +408,48 @@ class DMMessageListAPIView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    @method_decorator(csrf_protect)
+    def post(self,request,room_id,format=None):
+        rdata={}
+        try:
+            input_data=request.data
+            uid=request.user.id
+            
+            join_recode=DMRoomJoinUser.objects.filter(
+                join_user=uid,
+                dmroom=room_id
+            ).exists()
+            
+            if join_recode:
+                new_msg=DirectMailMessage(
+                    message_user=uid,
+                    message=input_data["message"],
+                    dm_room=room_id,
+                    image=input_data["image"],
+                    video=input_data["video"]
+                )
+                new_msg.save()
+                rdata["result"] = "success"
+                rdata["message"]="posted message."
+                return Response(
+                    data=rdata,
+                    status=status.HTTP_201_CREATED
+                )
+            else:
+                rdata["result"] = "failture"
+                rdata["message"]= "error."
+                return Response(
+                    data=rdata,
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        except Exception as e:
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class DMMessageDetailAPIView(APIView):
@@ -506,7 +580,7 @@ class DMMessageDetailAPIView(APIView):
             
             message_obj.delete()
             rdata["result"] = "success"
-            rdata["message"]="updated message."
+            rdata["message"]="deleted message."
             return Response(
                 data=rdata,
                 status=status.HTTP_204_NO_CONTENT
