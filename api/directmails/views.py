@@ -196,7 +196,59 @@ class DMRJoinUserListAPIView(APIView):
         except Exception as e:
             pass
 
-# class DMRoomAPIView(APIView):
-#     permission_classes = [IsAuthenticated,]
+class DMRoomDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated,]
     
-#     def get(self,request,format=None):
+    def get(self,request,pk,format=None):
+        rdata={}
+        try:
+            uid=request.user.id
+            dmroom=DirectMailRoom.objects.filter(
+                create_room_user=uid,
+                id=pk
+            ).first()
+            rdata["result"] = "success"
+            rdata["content"]=dmroom
+            return Response(
+                data=rdata,
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    def patch(self,request,pk,format=None):
+        rdata={}
+        try:
+            uid=request.user.id
+            dmroom_obj=DirectMailRoom.objects.filter(
+                id=pk,
+                create_room_user=uid
+            ).first()
+            
+            dmroom_serializer=DirectMailRoomSerializer(
+                isinstance=dmroom_obj,
+                data=request.data,
+                partial=True
+            )
+            dmroom_serializer.is_valid()
+            dmroom_serializer.save()
+            rdata["result"] = "success"
+            rdata["message"]="updated rooms."
+            return Response(
+                data=rdata,
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
