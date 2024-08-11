@@ -13,9 +13,11 @@ router.register('v1/directmail/dm_message',DMMessageModelViewSet,basename="dmmes
 
 
 urlpatterns=[
-    path('v2/directmail/dmroom/list',DMRoomListAPIView.as_view(),name="dmroomlist"),
-    path('v2/directmail/room_joiner/list',DMRJoinUserListAPIView.as_view(),name="dmroomjoinerlist"),
-    path('v2/directmail/dmroom/detail/<int:pk>',DMRoomDetailAPIView.as_view(),name="dmroomdetail"),
+    path('v2/directmail/dmroom/list/',DMRoomListAPIView.as_view(),name="dmroomlist"),
+    path('v2/directmail/room_joiner/list/',DMRJoinUserListAPIView.as_view(),name="dmroomjoinerlist"),
+    path('v2/directmail/dmroom/detail/<int:pk>/',DMRoomDetailAPIView.as_view(),name="dmroomdetail"),
+    path('v2/directmail/room_joiner/detail/<int:pk>/',DMRJoinUserDetailAPIView.as_view(),name="dmrjoinuserdetail"),
+    path('v2/directmail/message/list/<int:room_id>/',DMMessageListAPIView.as_view(),name="messagelist"),
     path('',include(router.urls)),
 ]
 

@@ -268,7 +268,13 @@ class DMRJoinUserDetailAPIView(APIView):
                 left join
                     (
                         select
-                            *
+                            ui.id as user_id,
+                            upi.nickname as nn,
+                            upi.bio as bio,
+                            upi.icon as icon,
+                            upi.link as link,
+                            upi.account_id as uaid,
+                            upi.created_on as join_date
                         from
                             accounts_user as ui
                         left join
@@ -277,7 +283,7 @@ class DMRJoinUserDetailAPIView(APIView):
                             ui.id=upi.user_profile_id
                     ) as ui_tbl
                 on
-                    dmp.join_user_id = ui_tbl.id
+                    dmp.join_user_id = ui_tbl.user_id
                 left join
                     dm_room as dmr
                 on
@@ -302,3 +308,79 @@ class DMRJoinUserDetailAPIView(APIView):
                 data=rdata,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+            
+class DMMessageListAPIView(APIView):
+    permission_classes = [IsAuthenticated,]
+    
+    def get(self,request,room_id,format=None):
+        rdata={}
+        
+        try:
+            uid=request.user.id
+            is_join = DMRoomJoinUser.objects.filter(
+                join_user=uid,
+                dmroom=pk
+            )
+            
+            if is_join is not None:
+                query='''
+                    select
+                        *
+                    from
+                        dm_message as dmm
+                    left join
+                        (
+                            select
+                                ui.id as user_id,
+                                upi.nickname as nn,
+                                upi.bio as bio,
+                                upi.icon as icon,
+                                upi.link as link,
+                                upi.account_id as uaid,
+                                upi.created_on as join_date
+                            from
+                                accounts_user as ui
+                            left join
+                                user_profile as upi
+                            on
+                                ui.id=upi.user_profile_id
+                        ) as ui_tbl
+                    on
+                        dmm.message_user_id = ui_tbl.user_id
+                    where
+                        dmm.message_user_id = %s
+                '''
+                cursor = connection.cursor()
+                cursor.execute(query % (room_id))
+                
+                rdata["result"] = "success"
+                rdata["content"]=dictfetchall(cursor)
+                return Response(
+                    data=rdata,
+                    status=status.HTTP_200_OK
+                )
+            else:
+                rdata["result"] = "failture"
+                rdata["message"]= "error."
+                return Response(
+                    data=rdata,
+                    status=status.HTTP_404_NOT_FOUND
+                )
+                
+        except Exception as e:
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+# class DMMessageDetailAPIView(APIView):
+#     permission_classes = [IsAuthenticated,]
+    
+#     def get(self,request,room_id,format=None):
+#         rdata={}
+#         try:
+            
