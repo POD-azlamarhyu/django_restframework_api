@@ -8,12 +8,12 @@ from .views import *
 app_name='directmails'
 router = DefaultRouter()
 router.register('v1/directmail/directmessageroom',DMRoomModelViewSet,basename="dmroomapi")
-router.register('v1/directmail/dmroomjointuser',DMRUserModelViewSet,basename="roomjointuser")
-router.register('v1/directmail/dmmessage',DMMessageModelViewSet,basename="dmmessage")
+router.register('v1/directmail/dmroom_joint_user',DMRUserModelViewSet,basename="roomjointuser")
+router.register('v1/directmail/dm_message',DMMessageModelViewSet,basename="dmmessage")
 
 
 urlpatterns=[
-    path('v1/directmail/dmroom_and_post_view/',DMRoomAPIView.as_view(),name="dmroompostget"),
+    path('v2/directmail/dmroom/list',DMRoomListAPIView.as_view(),name="dmroompostget"),
     path('',include(router.urls)),
 ]
 

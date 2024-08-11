@@ -5,7 +5,7 @@ from django.db.models.expressions import RawSQL
 from rest_framework.generics import *
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions,status
-
+from django.db import connection
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.views.decorators.cache import cache_page
@@ -43,7 +43,7 @@ class DMMessageModelViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated,]
     
     
-class DMRoomAPIView(APIView):
+class DMRoomListAPIView(APIView):
     permission_classes = [IsAuthenticated,]
     
     def get(self,request,format=None):
@@ -70,6 +70,7 @@ class DMRoomAPIView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
+    @method_decorator(csrf_protect)
     def post(self,request,format=None):
         rdata={}
         try:
@@ -106,3 +107,96 @@ class DMRoomAPIView(APIView):
                 data=rdata,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+class DMRJoinUserListAPIView(APIView):
+    permission_classes = [IsAuthenticated,]
+    
+    
+    def get(self,request,format=None):
+        rdata={}
+        uid=request.user.id
+        try:
+            query='''
+                select
+                    dmp.id,
+                    ui.id as user_id,
+                    dmr.id as room_id,
+                    dmr.room_name,
+                    dmr.room_image,
+                    dmr.description,
+                    dmr.created_on,
+                    upi.nickname,
+                    upi.account_id
+                from
+                    dmroom_participation as dmp
+                left join
+                    dm_room as dmr
+                on
+                    dmr.id = dmp.dmroom_id
+                left join
+                    accounts_user as ui
+                on
+                    dmp.join_user_id = ui.id
+                left join
+                    user_profile as upi
+                on
+                    ui.id=upi.user_profile_id
+                order by
+                    dmr.id asc
+                limit 10
+                '''
+            cursor = connection.cursor()
+            cursor.execute(query)
+            # dmr_joinuser=cursor.fetchall()
+            
+            cursor.close()
+            rdata["result"] = "success"
+            rdata["content"]=dictfetchall(cursor)
+            
+            return Response(
+                data=rdata,
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    @method_decorator(csrf_protect)
+    def post(self,request,format=None):
+        rdata={}
+        try:
+            input_data=request.data
+            uid=request.user.id
+            new_join_recode=DMRoomJoinUser.objects.filter(
+                join_user=uid,
+                dmroom=input_data["id"]
+            ).first()
+            
+            
+            if new_join_recode:
+                new_join_recode.delete()
+                msg = "delete room enter info."
+            else:
+                new_join=DMRoomJoinUser(
+                    join_user=uid,
+                    dmroom=input_data["id"]
+                )
+                new_join.save()
+                msg = "created room enter info."
+                rdata["result"]="success"
+                rdata["message"]=msg
+            return Response(
+                data=rdata,
+                status=status.HTTP_201_CREATED
+            )
+        except Exception as e:
+            pass
+
+# class DMRoomAPIView(APIView):
+#     permission_classes = [IsAuthenticated,]
+    
+#     def get(self,request,format=None):
