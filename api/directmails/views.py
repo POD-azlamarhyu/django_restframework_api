@@ -319,10 +319,10 @@ class DMMessageListAPIView(APIView):
             uid=request.user.id
             is_join = DMRoomJoinUser.objects.filter(
                 join_user=uid,
-                dmroom=pk
-            )
+                dmroom=room_id
+            ).exists()
             
-            if is_join is not None:
+            if is_join:
                 query='''
                     select
                         *
@@ -364,7 +364,7 @@ class DMMessageListAPIView(APIView):
                 rdata["message"]= "error."
                 return Response(
                     data=rdata,
-                    status=status.HTTP_404_NOT_FOUND
+                    status=status.HTTP_403_FORBIDDEN
                 )
                 
         except Exception as e:
@@ -377,10 +377,145 @@ class DMMessageListAPIView(APIView):
             )
 
 
-# class DMMessageDetailAPIView(APIView):
-#     permission_classes = [IsAuthenticated,]
+
+class DMMessageDetailAPIView(APIView):
+    permission_classes = [IsAuthenticated,]
     
-#     def get(self,request,room_id,format=None):
-#         rdata={}
-#         try:
+    def get(self,request,room_id,message_id,format=None):
+        rdata={}
+        try:
+            uid=request.user.id
             
+            is_join = DMRoomJoinUser.objects.filter(
+                join_user=uid,
+                dmroom=room_id
+            ).exists()
+            
+            if is_join is False:
+                rdata["result"] = "failture"
+                rdata["message"]= "error."
+                return Response(
+                    data=rdata,
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            
+            query='''
+                    select
+                        *
+                    from
+                        dm_message as dmm
+                    left join
+                        (
+                            select
+                                ui.id as user_id,
+                                upi.nickname as nn,
+                                upi.bio as bio,
+                                upi.icon as icon,
+                                upi.link as link,
+                                upi.account_id as uaid,
+                                upi.created_on as join_date
+                            from
+                                accounts_user as ui
+                            left join
+                                user_profile as upi
+                            on
+                                ui.id=upi.user_profile_id
+                        ) as ui_tbl
+                    on
+                        dmm.message_user_id = ui_tbl.user_id
+                    where
+                        dmm.message_user_id = %s and
+                        dmm.dm_room_id = %s
+                '''
+            cursor = connection.cursor()
+            cursor.execute(query % (message_id,room_id))
+            rdata["result"] = "success"
+            rdata["content"]=dictfetchall(cursor)
+            return Response(
+                data=rdata,
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    def patch(self,request,room_id,message_id,format=None):
+        rdata={}
+        try:
+            uid=request.user.id
+            message_obj=DirectMailMessage.objects.filter(
+                id=message_id,
+                dm_room=room_id,
+                message_user=uid
+            ).first()
+            
+            if message_obj is None:
+                rdata["result"] = "failture"
+                rdata["message"]= "error."
+                return Response(
+                    data=rdata,
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            
+            msg_serializer=DirectMailMessageSerializer(
+                isinstance=message_obj,
+                data=request.data,
+                partial=True
+            )
+            
+            if msg_serializer.is_valid():
+                msg_serializer.save()
+            
+            rdata["result"] = "success"
+            rdata["message"]="updated message."
+            return Response(
+                data=rdata,
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+            
+    def delete(self,request,room_id,message_id,format=None):
+        rdata={}
+        try:
+            uid=request.user.id
+            message_obj=DirectMailMessage.objects.filter(
+                id=message_id,
+                dm_room=room_id,
+                message_user=uid
+            ).first()
+            
+            if message_obj is None:
+                rdata["result"] = "failture"
+                rdata["message"]= "error."
+                return Response(
+                    data=rdata,
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            
+            message_obj.delete()
+            rdata["result"] = "success"
+            rdata["message"]="updated message."
+            return Response(
+                data=rdata,
+                status=status.HTTP_204_NO_CONTENT
+            )
+        except Exception as e:
+            rdata["result"] = "failture"
+            rdata["message"]= "error."
+            
+            return Response(
+                data=rdata,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
