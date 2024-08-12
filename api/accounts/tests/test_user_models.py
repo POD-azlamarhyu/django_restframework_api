@@ -159,3 +159,33 @@ class UserModelTests(TestCase):
         update_user.save()
         
         self.assertNotEqual(update_user.email,new_user.email)
+
+    def test_update_and_before_user(self):
+        new_user= User(
+            email="chinko.manko@email.au",
+            password="zb38s9zkf"
+        )
+        
+        new_user.save()
+        saved_user=User.objects.filter(
+            email=new_user.email
+        ).first()
+        
+        saved_user_id=saved_user.id
+        saved_user_email=saved_user.email
+        
+        update_user=saved_user
+        
+        update_user.email="gomi.unko.chinko@example.jp"
+        update_user.save()
+        
+        updated_user=User.objects.filter(
+            id=saved_user.id
+        ).first()
+        
+        updated_user_id=updated_user.id
+        updated_user_email=updated_user.email
+        
+        self.assertEqual(saved_user,update_user)
+        self.assertEqual(saved_user_id,updated_user_id)
+        self.assertNotEqual(saved_user_email,updated_user_email)
