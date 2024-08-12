@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8d2fnz)2r$k8&r80g3#l-@*@a+x5(wr(df90y0l)x@+cyj@*y4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -93,6 +93,9 @@ DATABASES = {
         'PASSWORD': dbpw,
         'HOST':'db',
         'PORT':5432,
+        'TEST':{
+            'NAME':'test_db',
+        }
     }
 }
 
@@ -186,11 +189,13 @@ LOGGING = {
     'loggers': {
         'django.db.backends': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': 'ERROR',
+            'propagate': False,
         },
     },
 }
 
 DEBUG_TOOLBAR_CONFIG={
     "SHOW_TOOLBAR_CALLBACK" : lambda request: True,
+    "IS_RUNNING_TESTS":False
 }
