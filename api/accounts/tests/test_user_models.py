@@ -142,3 +142,20 @@ class UserModelTests(TestCase):
         self.assertEqual(User.objects.filter(email=data[0]["email"]).exists(),True)
         
         self.assertNotEqual(User.objects.filter(email=data[1]["email"]).exists(),False)
+    
+    def test_update_email_user(self):
+        new_user= User(
+            email="chinko.chinko@email.us",
+            password="zb38s9zkf"
+        )
+        
+        new_user.save()
+        
+        update_user=User.objects.filter(
+            email=new_user.email
+        ).first()
+        
+        update_user.email="gomi.unko.chinko@example.jp"
+        update_user.save()
+        
+        self.assertNotEqual(update_user.email,new_user.email)
