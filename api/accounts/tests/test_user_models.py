@@ -189,3 +189,20 @@ class UserModelTests(TestCase):
         self.assertEqual(saved_user,update_user)
         self.assertEqual(saved_user_id,updated_user_id)
         self.assertNotEqual(saved_user_email,updated_user_email)
+        
+    def test_delete_user_count(self):
+        new_user= User(
+            email="chinko.manko@email.au",
+            password="zb38s9zkf"
+        )
+        
+        new_user.save()
+        
+        before_users=User.objects.all().count()
+        
+        del_user=User.objects.order_by('?').first()
+        del_user.delete()
+        
+        after_users=User.objects.all().count()
+        
+        self.assertNotEqual(before_users,after_users)
