@@ -65,10 +65,9 @@ class MyUserView(ListCreateAPIView):
     def get_queryset(self):
         return self.queryset.filter(id=self.request.user.id)
 
-class UserModelView(viewsets.ModelViewSet):
+class UserModelViewSet(viewsets.ModelViewSet):
     queryset=User.objects.all()
     serializer_class=UserSerializer
-    # なくていい
     permission_classes=[IsAuthenticated,]
 
     @action(methods=['get'],detail=True)
@@ -264,7 +263,7 @@ class UserChannelView(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-class ChannelModelView(viewsets.ModelViewSet):
+class ChannelModelViewSet(viewsets.ModelViewSet):
     queryset = UserChannel.objects.all()
     serializer_class = ChannelSerializer
     
@@ -372,3 +371,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def perform_create(self,serizalizer):
         serizalizer.save(user_profile=self.request.user)
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset=User.objects.all()
+    serializer_class=UserSerializer
+    permission_classes=[IsAuthenticated]
+    

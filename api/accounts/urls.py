@@ -1,15 +1,15 @@
 from django.urls import path,include
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
-from .views import RegisterView,MyUserProfileView,UserModelView,ProfileViewSet,AccountAdminInspectModelView,AccountAdminInspectView,MyUserChannelView,ChannelModelView,MyUserView,UserProfileView,UserChannelView
+from .views import RegisterView,MyUserProfileView,UserModelViewSet,ProfileViewSet,AccountAdminInspectModelView,AccountAdminInspectView,MyUserChannelView,ChannelModelViewSet,MyUserView,UserProfileView,UserChannelView
 from apicfg import settings
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
 
 app_name='accounts'
 router = DefaultRouter()
 router.register('account/edit/profile',ProfileViewSet)
-router.register('account/edit/channelinfo',ChannelModelView)
-router.register('account/edit/userinfo', UserModelView)
+router.register('account/edit/channelinfo',ChannelModelViewSet)
+router.register('account/edit/userinfo', UserModelViewSet)
 
 
 urlpatterns = [
