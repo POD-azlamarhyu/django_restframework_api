@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
 from accounts.models import User,UserChannel,UserProfile
-
+from accounts.factory import UserFactory,ProfileFactory
 
 class InitialModelTests(TestCase):
     
