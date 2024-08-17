@@ -18,8 +18,9 @@ class InitialModelTests(TestCase):
     
 class UserProfileModelTests(TestCase):
     def setUp(self) -> None:
+        self.user1=User.objects.get(email="tsukiji.not.service@netmeme.com")
+        self.user2=User.objects.get(email="ryutaro.nonomura@itmeme.co.jp")
         
-        pass
     
     @classmethod
     def setUpTestData(cls) -> None:
@@ -92,4 +93,24 @@ class UserProfileModelTests(TestCase):
         self.assertEqual(saved_pro_model.user_profile,saved_user_model)
         
         
+    def test_update_profile(self):
+        profile=UserProfile.objects.get(user_profile=self.user2)
+        before_user_accountid=profile.account_id
+        before_user_nickname=profile.nickname
+        before_user_bio=profile.bio
+        before_user_icon=profile.icon
+        before_user_created=profile.created_on
+        before_user=profile.user_profile.pk
         
+        profile.account_id="orehane!! deyuhaha"
+        profile.bio="元兵庫県議会所属．俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじやとおもて！！あなたにはわからないでしょうね！！"
+        profile.save()
+        
+        after_user=UserProfile.objects.get(user_profile=self.user2)
+        
+        self.assertEqual(before_user,after_user.user_profile.pk)
+        self.assertEqual(before_user_nickname,after_user.nickname)
+        self.assertNotEqual(before_user_accountid,after_user.account_id)
+        self.assertNotEqual(before_user_bio,after_user.bio)
+        self.assertEqual(before_user_icon,after_user.icon)
+        self.assertEqual(before_user_created,after_user.created_on)
