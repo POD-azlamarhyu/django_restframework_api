@@ -4,6 +4,10 @@ from rest_framework.routers import DefaultRouter
 from .views import RegisterView,MyUserProfileView,UserModelViewSet,ProfileViewSet,AccountAdminInspectModelView,AccountAdminInspectView,MyUserChannelView,ChannelModelViewSet,MyUserView,UserProfileView,UserChannelView
 from apicfg import settings
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 app_name='accounts'
 router = DefaultRouter()

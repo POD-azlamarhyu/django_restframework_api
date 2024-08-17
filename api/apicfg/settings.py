@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounts',
     'djoser',
+    # 'rest_framework_simplejwt',
     'tweets',
     'django_extensions',
     'debug_toolbar',
@@ -162,8 +163,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME':timedelta(hours=24),
-    'REFRESH_TOKEN_LIFETIME':timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME':timedelta(minutes=1),
+    'REFRESH_TOKEN_LIFETIME':timedelta(minutes=1),
     'ROTATE_REFRESH_TOKENS':False,
     'BLACKLIST_AFTER_ROTATION':False,
     'AUTH_HEADER_TYPES':('JWT',),
