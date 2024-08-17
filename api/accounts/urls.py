@@ -21,8 +21,8 @@ urlpatterns = [
     path('account/myuser/',MyUserView.as_view(),name='myuser'),
     path('account/myprofile/',MyUserProfileView.as_view(),name='myprofile'),
     path('account/mychannel/',MyUserChannelView.as_view(),name='mychannel'),
-    path('account/api/user/v1/profile/',UserProfileView.as_view(),name="userprofiles"),
-    path('account/api/user/v1/channel/',UserChannelView.as_view(),name="userprofiles"),
+    path('account/user/v1/profile/',UserProfileView.as_view(),name="userprofiles"),
+    path('account/user/v1/channel/',UserChannelView.as_view(),name="userprofiles"),
     path('admin/secret/accounts/',AccountAdminInspectModelView.as_view(),name="onlyadminaccounts"),
     path('admin/secret/inspect/',AccountAdminInspectView.as_view(),name="onlyadmininspect"),
     path('',include(router.urls))
