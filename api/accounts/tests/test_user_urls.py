@@ -11,3 +11,13 @@ class UserAPIURLTests(TestCase):
         url = reverse('accounts:registration')
         self.assertEqual(resolve(url).route,'auth/signup/')
         self.assertEqual(resolve(url).url_name,'registration')
+        
+    def test_myprofile_url(self):
+        url=reverse('accounts:myprofile')
+        self.assertEqual(resolve(url).route,'auth/account/myprofile/')
+        
+    def test_myuser_url(self):
+        url=reverse('accounts:myuser')
+        self.assertEqual(resolve(url).route,'auth/account/myuser/')
+        
+    

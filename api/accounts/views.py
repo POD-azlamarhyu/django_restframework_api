@@ -367,8 +367,8 @@ class MyUserProfileView(ListAPIView):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
+    permission_classes=[IsAuthenticated]
     
     def perform_create(self,serizalizer):
         serizalizer.save(user_profile=self.request.user)
-
 
