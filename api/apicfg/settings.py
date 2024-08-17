@@ -43,11 +43,12 @@ INSTALLED_APPS = [
     'corsheaders',
     'accounts',
     'djoser',
-    # 'rest_framework_simplejwt',
+    'rest_framework_simplejwt',
     'tweets',
     'django_extensions',
     'debug_toolbar',
     'directmails',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [

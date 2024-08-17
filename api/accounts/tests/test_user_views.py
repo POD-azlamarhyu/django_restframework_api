@@ -9,13 +9,6 @@ from rest_framework import status
 class JWTViewTest(APITestCase):
     
     def setUp(self):
-        self.user_pw="xn39zksh32a"
-        self.user_email="tsukiji.not.service@netmeme.com"
-        self.factory=APIRequestFactory()
-        self.client=APIClient()
-
-    @classmethod
-    def setUpTestData(cls) -> None:
         user1=User(
             email="tsukiji.not.service@netmeme.com",
         )
@@ -41,8 +34,40 @@ class JWTViewTest(APITestCase):
             account_id="aaaaaaaaa",
             bio="元兵庫県議会所属．俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじや"
         )
+        self.user_pw="xn39zksh32a"
+        self.user_email="tsukiji.not.service@netmeme.com"
+        self.factory=APIRequestFactory()
+        self.client=APIClient()
+
+    # @classmethod
+    # def setUpTestData(cls) -> None:
+    #     user1=User(
+    #         email="tsukiji.not.service@netmeme.com",
+    #     )
+    #     user2=User(
+    #         email="ryutaro.nonomura@itmeme.co.jp",
+    #     )
+    #     user1.set_password('xn39zksh32a')
+    #     user1.save()
         
-        return super().setUpTestData()
+    #     user2.set_password("k39dxmwsks")
+    #     user2.save()
+    #     UserProfile.objects.create(
+    #         nickname="築地市場営業しているニキ＆いないニキ",
+    #         user_profile=user1,
+    #         account_id="tsukiji_market_boy",
+    #         bio="東京の築地市場は営業していません！（営業しております）"
+    #     )
+        
+        
+    #     UserProfile.objects.create(
+    #         nickname="nonomura ryutaro",
+    #         user_profile=user2,
+    #         account_id="aaaaaaaaa",
+    #         bio="元兵庫県議会所属．俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじや"
+    #     )
+        
+    #     return super().setUpTestData()
     
     def test_jwt_login(self):
         
@@ -53,7 +78,9 @@ class JWTViewTest(APITestCase):
         response=self.client.post(
             '/auth/account/jwt/create/',
             data,
-            # format='json',
-            content_type='application/json'
+            format="json"
             )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+        self.assertTrue("access" in response.json())
+        self.assertTrue("refresh" in response.json())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
