@@ -20,4 +20,12 @@ class UserAPIURLTests(TestCase):
         url=reverse('accounts:myuser')
         self.assertEqual(resolve(url).route,'auth/account/myuser/')
         
+    def test_user_viewset_url(self):
+        url=reverse('accounts:user-list')
+        self.assertEqual(resolve(url).func.__name__,UserModelViewSet.__name__)
+        self.assertEqual(resolve(url).route,'auth/account/edit/userinfo/$')
     
+    def test_profile_viewset_url(self):
+        url=reverse('accounts:userprofile-list')
+        self.assertEqual(resolve(url).func.__name__,ProfileViewSet.__name__)
+        self.assertEqual(resolve(url).route,'auth/account/edit/profile/$')
