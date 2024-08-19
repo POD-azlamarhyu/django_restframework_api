@@ -3,13 +3,7 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from .views import RegisterView,MyUserProfileView,UserModelViewSet,ProfileViewSet,AccountAdminInspectModelView,AccountAdminInspectView,MyUserChannelView,ChannelModelViewSet,MyUserView,UserProfileView,UserChannelView
 from apicfg import settings
-from rest_framework_simplejwt.views import TokenVerifyView
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-    TokenBlacklistView
-)
 
 app_name='accounts'
 router = DefaultRouter()
@@ -20,10 +14,6 @@ router.register('account/edit/userinfo', UserModelViewSet)
 
 urlpatterns = [
     path('signup/',RegisterView.as_view(),name='registration'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('api/token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
     path('account/myuser/',MyUserView.as_view(),name='myuser'),
     path('account/myprofile/',MyUserProfileView.as_view(),name='myprofile'),
     path('account/mychannel/',MyUserChannelView.as_view(),name='mychannel'),

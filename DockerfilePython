@@ -26,4 +26,4 @@ RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN pip install -r requirements.txt
 ADD . /api/
-EXPOSE 8000
+EXPOSE 8080

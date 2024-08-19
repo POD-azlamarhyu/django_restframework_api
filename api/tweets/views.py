@@ -156,7 +156,7 @@ class MyTweetProfileView(APIView):
                 on
                     ui.id = upi.user_profile_id
                 where
-                    ui.id = %s
+                    ui.id = %s 
                 order by
                     ti.created_on asc
             '''
