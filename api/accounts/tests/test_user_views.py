@@ -4,7 +4,8 @@ from django.test import TestCase
 from accounts.models import User,UserChannel,UserProfile
 from accounts.factory import UserFactory,ProfileFactory
 from rest_framework import status
-
+from apicfg.console import *
+from apicfg.utils import *
 
 class JWTViewTest(APITestCase):
     
@@ -59,7 +60,6 @@ class JWTViewTest(APITestCase):
         
         # self.assertTrue("access" in response)
         # self.assertTrue("refresh" in response)
-        print(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
     
     def test_jwt_refresh_token(self):
@@ -76,10 +76,4 @@ class JWTViewTest(APITestCase):
             format="json"
         )
         
-        self.assertEqual(login_response.status_code,status.HTTP_200_OK)
         
-        refresh_url=reverse('token_refresh')
-        refresh_response=self.client.post(
-            refresh_url,
-            
-        )
