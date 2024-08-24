@@ -7,7 +7,7 @@ from rest_framework import status
 from apicfg.console import *
 from apicfg.utils import *
 
-class JWTViewTest(APITestCase):
+class JWTViewTest(APITestCase,TestCase):
     
     def setUp(self):
         user1=User(
@@ -39,6 +39,9 @@ class JWTViewTest(APITestCase):
         )
         self.user_pw="xn39zksh32a"
         self.user_email="tsukiji.not.service@netmeme.com"
+        
+        self.userPw="k39dxmwsks"
+        self.userEmail="ryutaro.nonomura@itmeme.co.jp"
         self.factory=APIRequestFactory()
         self.client=APIClient()
     
@@ -76,4 +79,90 @@ class JWTViewTest(APITestCase):
             format="json"
         )
         
+        login_res_data=login_response.data
+        self.assertEqual(login_response.status_code,status.HTTP_200_OK)
         
+        refresh_url=reverse('token_refresh')
+        # debug_list_pprint(login_res_data["access"])
+        # debug_list_pprint(login_res_data["refresh"])
+        pdata={
+            "refresh":login_res_data["refresh"]
+        }
+        refresh_response=self.client.post(
+            refresh_url,
+            pdata,
+            format="json"
+        )
+        
+        refresh_data=refresh_response.data
+        
+        self.assertEqual(refresh_response.status_code,status.HTTP_200_OK)
+        self.assertTrue("access" in refresh_data)
+    
+    def test_jwt_verify_token(self):
+        
+        # pdata={
+        #     'email':self.user_email,
+        #     'password':self.user_pw
+        # }
+        pdata={
+            'email':self.userEmail,
+            'password':self.userPw
+        }
+        
+        login_url=reverse('token_obtain_pair')
+        login_response=self.client.post(
+            login_url,
+            pdata,
+            format="json"
+        )
+        
+        login_res_data=login_response.data
+        self.assertEqual(login_response.status_code,status.HTTP_200_OK)
+        
+        verify_url=reverse('token_verify')
+        pdata={
+            "token":login_res_data["access"]
+        }
+        # self.client.credentials(
+        #     HTTP_AUTHORIZATION=f'JWT {login_res_data["access"]}'
+        # )
+        verify_response=self.client.post(
+            verify_url,
+            pdata,
+            format="json"
+        )
+        
+        self.assertEqual(verify_response.status_code,status.HTTP_200_OK)
+    
+    def test_jwt_logout(self):
+        # pdata={
+        #     'email':self.user_email,
+        #     'password':self.user_pw
+        # }
+        pdata={
+            'email':self.userEmail,
+            'password':self.userPw
+        }
+        
+        login_url=reverse('token_obtain_pair')
+        login_response=self.client.post(
+            login_url,
+            pdata,
+            format="json"
+        )
+        
+        login_res_data=login_response.data
+        self.assertEqual(login_response.status_code,status.HTTP_200_OK)
+        
+        logout_url=reverse('token_blacklist')
+        pdata={
+            "refresh":login_res_data["refresh"]
+        }
+        logout_response=self.client.post(
+            logout_url,
+            pdata,
+            format="json"
+        )
+        self.assertEqual(logout_response.status_code,status.HTTP_200_OK)
+    
