@@ -24,10 +24,10 @@ from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
 User = get_user_model()
 
 
-# @csrf_protect
+
 class RegisterView(APIView):
     permission_classes = [AllowAny,]
-    
+    @method_decorator(csrf_protect)
     def post(self,request):
         try:
             data = request.data
@@ -62,6 +62,8 @@ class RegisterView(APIView):
 class MyUserView(ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated,]
+    
     def get_queryset(self):
         return self.queryset.filter(id=self.request.user.id)
 

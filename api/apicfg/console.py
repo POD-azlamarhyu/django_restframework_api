@@ -55,3 +55,9 @@ def debug_var_print_none(vars,data):
         print("="*50,end="\n")
         print("{} : {}".format(vars, data))
         print("="*50,end="\n")
+
+def debug_test_print(data):
+    print("\n\n")
+    print("#"*100,end="\n\n")
+    pprint(data,indent=4,width=50)
+    print("#"*100,end="\n\n")
