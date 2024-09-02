@@ -34,7 +34,7 @@ class UserModelViewTest(APITestCase,TestCase):
             nickname="nonomura ryutaro",
             user_profile=user2,
             account_id="aaaaaaaaa",
-            bio="元兵庫県議会所属．俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじや"
+            bio="俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじや"
         )
         self.user_pw="xn39zksh32a"
         self.user_email="tsukiji.not.service@netmeme.com"

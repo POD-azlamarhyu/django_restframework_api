@@ -82,18 +82,7 @@ restframeworkのViewはいくつかのクラスを継承する
 ## AccountAPI
 
 ```
-/auth/	rest_framework.routers.APIRootView	accounts:api-root
-/auth/\.<format>/	rest_framework.routers.APIRootView	accounts:api-root
-/auth/account/jwt/create/	rest_framework_simplejwt.views.TokenObtainPairView	jwt-create
-/auth/account/jwt/refresh/	rest_framework_simplejwt.views.TokenRefreshView	jwt-refresh
-/auth/account/jwt/verify/	rest_framework_simplejwt.views.TokenVerifyView	jwt-verify
-/auth/signup/	accounts.views.RegisterView	accounts:registration
-/auth/user/myprofile/	accounts.views.MyUserInfoView	accounts:myprofile
-/auth/user/profile/	accounts.views.ProfileViewSet	accounts:userprofile-list
-/auth/user/profile/<pk>/	accounts.views.ProfileViewSet	accounts:userprofile-detail
-/auth/user/profile/<pk>\.<format>/	accounts.views.ProfileViewSet	accounts:userprofile-detail
-/auth/user/profile\.<format>/	accounts.views.ProfileViewSet	accounts:userprofile-list
-/media/<path>	django.views.static.serve	
+
 ```
 ---
 

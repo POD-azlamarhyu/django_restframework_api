@@ -47,7 +47,7 @@ class UserProfileModelTests(TestCase):
             nickname="nonomura ryutaro",
             user_profile=user2,
             account_id="aaaaaaaaa",
-            bio="元兵庫県議会所属．俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじや"
+            bio="俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじや"
         )
         
         return super().setUpTestData()
@@ -103,7 +103,7 @@ class UserProfileModelTests(TestCase):
         before_user=profile.user_profile.pk
         
         profile.account_id="orehane!! deyuhaha"
-        profile.bio="元兵庫県議会所属．俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじやとおもて！！あなたにはわからないでしょうね！！"
+        profile.bio="俺は゛ね゛ぇ゛デュハハ．おんなじやおんなじやとおもて！！あなたにはわからないでしょうね！！"
         profile.save()
         
         after_user=UserProfile.objects.get(user_profile=self.user2)
